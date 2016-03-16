@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='js/d3.slider.css' type='text/css' />
+    <link rel='stylesheet' href='citibike.css' type='text/css' />
+    <script src='js/conf.js'></script>
+    <script src='js/d3.min.js'></script>
+    <script src='js/d3.slider.js'></script>
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; font-family: 'Open Sans', sans-serif; font-weight: 300; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.0.1/mapbox-gl-compare.js'></script>
+<div id='header'><div id='about'>About</div><div id='logo'><span class='citibike'>Citibike&nbsp;</span><span class='rebalanced'>Rebalanced</span></div></div>
+<div id='time'></div>
+<div id='panel'>
+  <div id='panelClose'></div>
+  <div id='panelHeader'></div>
+  <div id='panelContent'></div>
+</div>
+<div id='sliderArea'><div id='slider'></div></div>
+<div id='masterArea' class='area'>
+  <div id='master' class='map'></div>
+</div>
+<div id='compareArea' class='area'>
+  <div id='left' class='map'></div>
+  <div id='right' class='map'></div>
+</div>
+
+<script src='js/citibike.js'></script>
+</body>
+</html>
