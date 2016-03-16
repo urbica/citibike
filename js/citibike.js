@@ -106,7 +106,7 @@ function getSlider() {
 
   d3.select('#slider').call(
     d3.slider()
-      .min(0).max(23).step(1)
+      .min(-1).max(23).step(1)
       .on("slide", function(evt, value) {
         timeFormatter(Math.round(value));
         if(!sliding) {
@@ -131,7 +131,7 @@ function getSlider() {
       .on("slideend", function(evt, value) {
         sliding = false;
         clearInterval(interval);
-        if(value>0) changeMode({id: 'hours', slice: 'h'+Math.random(value)});
+        if(value>0) changeMode({id: 'hours', slice: 'h'+Math.round(value)});
           else changeMode({id: 'total'});
       })
   );
