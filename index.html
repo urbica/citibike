@@ -16,17 +16,30 @@
     <style>
         body { margin:0; padding:0; font-family: 'Open Sans', sans-serif; font-weight: 300; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
+        .mapboxgl-ctrl-attrib a,.mapboxgl-ctrl-attrib { color: #ddd; }
+        .mapboxgl-ctrl-attrib { color: #ddd; }
+        .mapboxgl-ctrl-attrib .mapboxgl-ctrl {
+          background: red;
+        }
+        .mapboxgl-ctrl {
+          background: rgba(0, 0, 0, 0.3) !important;
+        }
+
     </style>
 </head>
 <body>
 
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.0.1/mapbox-gl-compare.js'></script>
-<div id='header'><div id='about'>About</div><div id='logo'><span class='citibike'>Citibike&nbsp;</span><span class='rebalanced'>Rebalanced</span></div></div>
-<div id='time'></div>
+<div id='header'><div id='about'>About</div><div id='logo'><span>NYC&nbsp;</span><span class='citibike'>Citibike&nbsp;</span><span class='rebalanced'>Rebalanced</span></div></div>
+<div id='legend'></div>
+<a href="http://urbica.co"><div id='urbica-logo'></div></a>
 <div id='panel'>
   <div id='panelClose'></div>
   <div id='panelHeader'></div>
-  <div id='panelContent'></div>
+  <div id='panelContent'>
+    <div id='panelContentParams'></div>
+    <div id='panelContentGraphs'></div>
+    <div id='panelContentException'></div>
+  </div>
 </div>
 <div id='sliderArea'><div id='slider'></div></div>
 <div id='masterArea' class='area'>
