@@ -52,6 +52,20 @@ master = new mapboxgl.Map({
   //draw slider
   getSlider();
 
+
+ var line_filters = {
+      l_line_1: true, l_line_2: true,
+      l_line_3: true, r_line_1: true,
+      r_line_2: true, r_line_3: true
+  };
+
+  master.batch(function (batch) {
+    for(lf in line_filters) {
+          //  batch.setLayoutProperty(lf, "visibility", "none");
+    }
+  });
+
+
   //start application
   changeMode(currentMode);
 

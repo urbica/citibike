@@ -62,7 +62,7 @@
    z-index: 1012022;
    top: 60px;
    left: 10px;
-   width: 400px;
+   width: 240px;
    background: rgba(12, 12, 12, 0.8);
    color: #eee;
    padding: 10px;
@@ -83,6 +83,8 @@
  #panelClose {
    position: relative;
    right: 0px;
+   margin-top: -3px;
+   margin-right: -3px;
    float: right;
    top: 0px;
    width: 28px;
@@ -103,16 +105,6 @@
    padding: 0;
  }
 
- #compareArea {
-   display: none;
- }
-
-  #compareArea .map {
-      display: inline-block;
-      width: 50%;
-      height: 100%;
-  }
-
   #master {
       display: block;
       width: 100%;
@@ -124,14 +116,43 @@
   display: none;
 }
 
-#sliderArea {
+#controls {
   z-index: 101010;
   position: absolute;
   left: 50%;
   bottom: 30px;
-  margin-left: -200px;
-  width: 400px;
+  margin-left: -250px;
+  width: 500px;
   text-align: center;
-  background: rgba(0,0,0,0.5);
   color: #fff;
+}
+
+#sliderArea {
+  display: inline-block;
+  width: 300px;
+  background: rgba(0,0,0,0.5);
+  line-height: 30px;
+}
+
+
+.mode {
+    display: inline-block;
+    width: 44px;
+    height: 20px;
+    line-height: 20px;
+    color: #fff;
+    border: 2px solid #dedede;
+    border-radius: 2px;
+    background: #111;
+    z-index: 3;
+    cursor: pointer;;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.mode:hover, .mode:active {
+    border: 2px solid #f0f0f0;
+    background: #444;
+
 }
