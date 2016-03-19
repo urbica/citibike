@@ -11,11 +11,17 @@ var start = { z: 12.5, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17
     panelContentParams = d3.select("#panelContentParams"),
     panelContentGraphs = d3.select("#panelContentGraphs"),
     panelClose = d3.select("#panelClose"),
+    routesControl = d3.select("#routes"),
+    stationsControl = d3.select("#stations"),
+    about = d3.select("#about"),
+    fade = d3.select("#fade"),
     interval, sliding,
-    isCursor;
+    isCursor,
+    routes_layers = ['r_line_1', 'r_line_2', 'r_line_3', 'l_line_1', 'l_line_2', 'l_line_3'],
+    stations_layers = ['av_bg', 'av_border', 'av_20', 'av_50', 'av_80', 'av_100'];
 
 
-var currentMode = { id: "total", slice: -1 }; //init mode
+var currentMode = { id: "routes", slice: -1 }; //init mode
 
 
 function timeFormatter(t) {
@@ -46,24 +52,14 @@ master = new mapboxgl.Map({
   });
 
   panelClose.on('click', function() {
-    changeMode({id: 'total', slice: currentMode.slice});
+    changeMode({id: currentMode.id, slice: currentMode.slice});
   });
 
   //draw slider
   getSlider();
 
-
- var line_filters = {
-      l_line_1: true, l_line_2: true,
-      l_line_3: true, r_line_1: true,
-      r_line_2: true, r_line_3: true
-  };
-
-  master.batch(function (batch) {
-    for(lf in line_filters) {
-          //  batch.setLayoutProperty(lf, "visibility", "none");
-    }
-  });
+  routesControl.on('click', function() { changeMode({id: 'routes', slice: currentMode.slice, feature: currentMode.feature ? currentMode.feature : false })});
+  stationsControl.on('click', function() { changeMode({id: 'stations', slice: currentMode.slice, feature: currentMode.feature ? currentMode.feature : false })});
 
 
   //start application
@@ -82,9 +78,9 @@ master = new mapboxgl.Map({
              }
            });
            if(citibike_id) {
-             changeMode({id: 'station', slice: currentMode.slice, feature: feature });
+             changeMode({id: currentMode.id, slice: currentMode.slice, feature: feature });
            } else {
-             changeMode({id: 'total', slice: currentMode.slice});
+             changeMode({id: currentMode.id, slice: currentMode.slice});
            }
        });
 })
@@ -124,7 +120,7 @@ function getSlider() {
         if(!sliding) {
           sliding = true;
           interval = setInterval(function () {
-                changeMode({id: currentMode.id, slice: Math.round(value), feature: (currentMode.id == 'station') ? currentMode.feature : false });
+                changeMode({id: currentMode.id, slice: Math.round(value), feature: currentMode.feature ? currentMode.feature : false });
               clearInterval(interval);
               sliding = false;
           }, 500);
@@ -136,7 +132,7 @@ function getSlider() {
       .on("slideend", function(evt, value) {
         sliding = false;
         clearInterval(interval);
-          changeMode({id: currentMode.id, slice: Math.round(value), feature: (currentMode.id == 'station') ? currentMode.feature : false });
+          changeMode({id: currentMode.id, slice: Math.round(value), feature: currentMode.feature ? currentMode.feature : false });
       })
   );
 
@@ -146,19 +142,27 @@ function getSlider() {
   function changeMode(mode) {
 
     console.log(mode);
-    var line_filters = {}, stations_filters = {}, slice, slice_st, sliceRate, citibike_id;
+    var line_filters = {}, stations_filters = {}, slice, slice_st, sliceRate, stationRate, citibike_id;
 
-    //currentMode = mode;
+    console.log('prev:' + mode.id + ' set: ' + currentMode.id);
+
+
 
     if(mode.slice < 0) {
       slice = 'total';
       sliceRate = 1;
       slice_st = 't_av';
-
     } else {
       slice = 'h' + mode.slice;
       sliceRate = 0.15;
       slice_st = 't' + mode.slice;
+    }
+
+    if(mode.feature) {
+      citibike_id = mode.feature.properties.citibike_id;
+      stationRate = 0.3;
+    } else {
+      stationRate = 1;
     }
 
 
@@ -178,13 +182,12 @@ function getSlider() {
       av_100: ["all",[">=",slice_st,0.9]]
     }
 
-    console.log(stations_filters);
+//    console.log(stations_filters);
+  /*
+    if(mode.id == 'stations') {
 
+      if(feature) {
 
-
-    if(mode.id == 'station') {
-      citibike_id = mode.feature.properties.citibike_id;
-      var stationRate = 0.3;
       line_filters = {
           l_line_1: ["all",["<",slice,500*sliceRate*stationRate], ["==", "startid",citibike_id]],
           l_line_2: ["all",[">=",slice,500*sliceRate*stationRate],["<","total",1000*sliceRate*stationRate], ["==", "startid",citibike_id]],
@@ -195,25 +198,49 @@ function getSlider() {
         };
 
 
-
       master.setLayoutProperty("s_stations_selection", "visibility", "visible");
       master.setFilter("s_stations_selection", ["all",["==", "citibike_id",citibike_id]]);
+
+      }
+
     } else {
       master.setLayoutProperty("s_stations_selection", "visibility", "none");
     }
 
+    */
+
     //apply
-    if(master && line_filters) {
+
+
+    if(master) {
+
       master.batch(function (batch) {
+        if(mode.id !== currentMode.id) {
+            routes_layers.forEach(function (l) {
+              if(mode.id == 'routes')
+                batch.setLayoutProperty(l, "visibility", "visible");
+                  else
+                  batch.setLayoutProperty(l, "visibility", "none");
+            });
+            stations_layers.forEach(function (l) {
+              if(mode.id == 'stations')
+                batch.setLayoutProperty(l, "visibility", "visible");
+                  else
+                  batch.setLayoutProperty(l, "visibility", "none");
+            });
+        }
+
         for(lf in line_filters) {
             batch.setFilter(lf, line_filters[lf]);
         }
         for(st in stations_filters) {
           batch.setFilter(st, stations_filters[st]);
-          console.log(st + ': ' + JSON.stringify(stations_filters[st]));
+          // console.log(st + ': ' + JSON.stringify(stations_filters[st]));
         }
     });
     }
+
+
 
     //setting the currentMode
     currentMode = mode;
