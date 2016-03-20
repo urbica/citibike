@@ -3,14 +3,14 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidXJiaWNhIiwiYSI6ImNpamFhZXNkOTAwMnp2bGtxOTFvM
 var start = { z: 12.5, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17, minZoom: 11 },
     master, left, right,
     masterStyle, leftStyle, rightStyle,
-    masterArea = d3.select("#masterArea"),
-    compareArea = d3.select("#compareArea"),
+    masterArea = d3.select("#master-area"),
+    compareArea = d3.select("#compare-area"),
     panel = d3.select("#panel"),
-    panelHeader = d3.select("#panelHeader"),
-    panelContent = d3.select("#panelContent"),
-    panelContentParams = d3.select("#panelContentParams"),
-    panelContentGraphs = d3.select("#panelContentGraphs"),
-    panelClose = d3.select("#panelClose"),
+    panelHeader = d3.select("#panel-header"),
+    panelContent = d3.select("#panel-content"),
+    panelContentParams = d3.select("#panel-content-params"),
+    panelContentGraphs = d3.select("#panel-content-graphs"),
+    panelClose = d3.select("#panel-close"),
     routesControl = d3.select("#routes"),
     stationsControl = d3.select("#stations"),
     about = d3.select("#about"),
@@ -18,10 +18,27 @@ var start = { z: 12.5, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17
     interval, sliding,
     isCursor,
     routes_layers = ['r_line_1', 'r_line_2', 'r_line_3', 'l_line_1', 'l_line_2', 'l_line_3'],
-    stations_layers = ['av_bg', 'av_border', 'av_20', 'av_50', 'av_80', 'av_100'];
+    stations_layers = ['av_bg', 'av_border_1', 'av_border_2', 'av_border_3', 'av_20', 'av_50', 'av_80', 'av_100'];
+
+var currentMode = { id: "routes", slice: -1 };  //init mode
+
+d3.select('#about-map-button').on('click', function() {
+  d3.select('#about').style('display', 'none');
+});
+
+d3.select('#about-close').on('click', function() {
+  d3.select('#about').style('display', 'none');
+});
+
+d3.select('#about').on('click', function() {
+  d3.select('#about').style('display', 'none');
+});
+
+d3.select('#about-link').on('click', function() {
+  d3.select('#about').style('display', 'block');
+});
 
 
-var currentMode = { id: "routes", slice: -1 }; //init mode
 
 
 function timeFormatter(t) {
@@ -63,7 +80,7 @@ master = new mapboxgl.Map({
 
 
   //start application
-  changeMode(currentMode);
+  changeMode({ id: "routes", slice: -1 });
 
 })
 .on('click', function(e) {

@@ -1,4 +1,5 @@
   body {
+      color: #eee;
       overflow: hidden;
       background: #222;
      -webkit-touch-callout: none;
@@ -7,6 +8,9 @@
            -ms-user-select: none;
                user-select: none;
   }
+
+  a, a:visited { color: #fff; }
+  a:hover, a:active { color: #08f; }
 
   .area {
       position: absolute;
@@ -29,18 +33,88 @@
   }
 
   #logo { font-weight: 600; margin-left: 20px; font-size: 24px; }
-  #about { float: right; font-weight: 300; margin-right: 20px; cursor: pointer; }
+  #about-link { float: right; font-weight: 300; margin-right: 20px; cursor: pointer; }
   .citibike, .trips { color: #08f; }
   .rebalanced, .balanced { color: #f50; }
+
+  #about {
+    display: none;
+    position: absolute;
+    z-index: 20202020;
+    background: rgba(0, 0, 0, 0.88);
+    width: 100%;
+    height: 100%;
+  }
+
+  #about-header {
+    font-weight: 600; font-size: 24px;
+  }
+
+  #about-content {
+    margin: 100px 200px;
+  }
+
+
+  #about-close {
+    border: 1px solid #eee;
+    position: relative;
+    right: 0px;
+    margin-top: 20px;
+    margin-right: 20px;
+    float: right;
+    top: 0px;
+    width: 38px;
+    height: 38px;
+    border-radius: 19px;
+    background: url('close.svg') center center no-repeat;
+    cursor: pointer;
+    opacity: 0.6;
+    font-size: 13px;
+  }
+
+  #about-close:hover {
+    opacity: 0.9;
+  }
+
+  #about-map {
+   text-align: left;
+   margin: 50px 0;
+  }
+
+  #about-map-button {
+    display: inline-block;
+    font-weight: 600;
+    padding: 10px;
+    background: #06c;
+    cursor: pointer;
+    border-radius: 5px;
+
+  }
+
+  #about-map-button:hover {
+    background: #08f;
+  }
+
+  #about-credits {
+    font-size: 13px;
+  }
+
 
   #legend {
     position: absolute;
     z-index: 1012022;
-    bottom: 30px;
+    top: 60px;
     right: 10px;
+    width: 120px;
     background: rgba(12, 12, 12, 0.8);
     padding: 10px;
+    font-size: 12px;
   }
+
+  .line { line-height: 20px; }
+  .line-trip { color: #08f; font-weight: 600; }
+  .line-rebalancing { color: #f50; font-weight: 600; }
+
 
   #urbica-logo {
     position: absolute;
@@ -69,18 +143,18 @@
    display: none;
  }
 
- #panelHeader {
+ #panel-header {
    font-weight: 600;
    margin-bottom: 10px;
    text-align: left;;
    font-size: 16px;
  }
 
- #panelContent {
+ #panel-content {
    font-size: 13px;
  }
 
- #panelClose {
+ #panel-close {
    position: relative;
    right: 0px;
    margin-top: -3px;
@@ -95,11 +169,11 @@
    font-size: 13px;
  }
 
- #panelClose:hover {
+ #panel-close:hover {
    opacity: 0.9;
  }
 
- #masterArea {
+ #master-area {
    display: block;
    margin: 0;
    padding: 0;
@@ -127,7 +201,7 @@
   color: #fff;
 }
 
-#sliderArea {
+#slider-area {
   display: inline-block;
   width: 300px;
   background: rgba(0,0,0,0.5);
@@ -137,7 +211,7 @@
 
 .mode {
     display: inline-block;
-    width: 44px;
+  /*  width: 44px; */
     height: 20px;
     line-height: 20px;
     color: #fff;

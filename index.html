@@ -28,26 +28,69 @@
 </head>
 <body>
 
-<div id='header'><div id='about'>About</div><div id='logo'><span>NYC&nbsp;</span><span class='citibike'>Citibike&nbsp;</span><span class='rebalanced'>Rebalanced</span></div></div>
-<div id='legend'></div>
+<div id='header'><div id='about-link'>About</div><div id='logo'><span>NYC&nbsp;</span><span class='citibike'>Citi&nbsp;Bike&nbsp;</span>
+  <div class = 'mode' id='routes'>Rebalancing routes</div>
+  <div class = 'mode' id='stations'>Stations availability</div>
+
+</div>
+</div>
+<div class = 'about' id='about'>
+
+
+  <div id = 'about-close'></div>
+  <div id='about-content'>
+
+
+    <div id = 'about-header'>Rebancing study</div>
+    <div id = 'about-text'>
+      <p>(что-то про актуальность проблемы balancing)
+      <p>Inspired by Alexander Tedeschi's master degree thesis «A geospatial analysis of bike share redistribution in New York City» we decided to explore the system data for last year and investigated the routes of trips in workdays for one hour intervals. Also the average avaialability for each hour in workdays was analysed.
+      <p><a href="http://medium.com/">Read the story</a> on Urbica's Medium or explore the data in this interactive tool.</p>
+      <div id = 'about-map'><div id = 'about-map-button'>Back to the project</div></div>
+      <div id='about-credits'>
+      <p>Bike share trips data: <a href="http://www.citibikenyc.com/system-data">System data of NYCBS</a>, availability stations feeds: <a href="http://www.theopenbus.com/">The Open Bus project</a><br/>Trips routes — <a href='http://project-osrm.org/'>OSRM, map data — <a href='http://openstreetmap.org'>OpenSteetMap</a>
+        <br/>Design & development: <a href="http://urbica.co">Urbica Design</a>, data processing and analysis: <a href="https://www.facebook.com/sasha.tedeschi">Alexander Tedeschi</a></p>
+    </div>
+  </div>
+  </div>
+</div>
+<div id='legend'>
+  <div id='legend-routes'>
+    <div class='line'><span class='line-trip'>—</span>&nbsp;<span>Trip routes</span></div>
+    <div class='line'><span class='line-rebalancing'>—</span>&nbsp;<span>Rebalancing (x10)</span></div>
+    <div class='line'>Shown only frequent trips and rebalancing directions.</div>
+  </div>
+  <div id='legend-stations'>
+    <div class='line'>Percent of bikes on station</div>
+    <div class='line'><span class='station'><span class='station-empty'></span></span>&nbsp;<span>Empty stations (less 10 percent of bikes available)</span>
+    </div>
+    <div class='line'><span class='station'><span class='station-10'></span></span>&nbsp;<span>Empty stations</span>
+    </div>
+    <div class='line'><span class='station'><span class='station-50'></span></span>&nbsp;<span>Empty stations</span>
+    </div>
+    <div class='line'><span class='station'><span class='station-empty'></span></span>&nbsp;<span>Empty stations</span>
+    </div>
+    <div class='line'><span class='station'><span class='station-empty'></span></span>&nbsp;<span>Empty stations</span>
+    </div>
+
+  </div>
+</div>
 <a href="http://urbica.co"><div id='urbica-logo'></div></a>
 <div id='panel'>
-  <div id='panelClose'></div>
-  <div id='panelHeader'></div>
-  <div id='panelContent'>
-    <div id='panelContentParams'></div>
-    <div id='panelContentGraphs'></div>
-    <div id='panelContentException'></div>
+  <div id='panel-close'></div>
+  <div id='panel-header'></div>
+  <div id='panel-content'>
+    <div id='panel-content-params'></div>
+    <div id='panel-content-graphs'></div>
+    <div id='panel-content-exception'></div>
   </div>
 </div>
 <div id = 'controls'>
-  <div class = 'mode' id='routes'>Routes</div>
-  <div class = 'mode' id='stations'>Stations</div>
-  <div id='sliderArea'>
+  <div id='slider-area'>
     <div id='slider'></div>
   </div>
 </div>
-<div id='masterArea' class='area'>
+<div id='master-area' class='area'>
   <div id='master' class='map'></div>
 </div>
 

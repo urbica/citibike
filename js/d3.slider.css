@@ -20,7 +20,6 @@
 }
 
 .d3-slider-range-vertical {
-  background:#2980b9;
   left:0px;
   right:0px;
   position: absolute;
@@ -52,6 +51,7 @@
 .d3-slider-handle:hover, .d3-slider-handle:active {
     border: 2px solid #f0f0f0;
     background: #444;
+    color: #fff;
 
 }
 
