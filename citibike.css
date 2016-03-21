@@ -136,7 +136,7 @@
   }
 
   #about-map-button:hover {
-    background: #08f;
+    background: #0cf;
   }
 
   #about-credits {
@@ -158,7 +158,7 @@
   #legend-routes, #legend-stations { display: none; }
 
   .line { line-height: 16px; display: flex; margin-top: 5px; }
-  .line-trip { color: #08f; font-weight: 600; }
+  .line-trip { color: #0cf; font-weight: 600; }
   .line-rebalancing { color: #f50; font-weight: 600; }
   .caption { display: inline-block; }
   .av { display: inline-block; width: 16px; height: 16px; margin-right: 8px; }
@@ -191,7 +191,7 @@
    z-index: 1012022;
    top: 60px;
    left: 10px;
-   width: 240px;
+   width: 260px;
    background: rgba(12, 12, 12, 0.8);
    color: #eee;
    padding: 10px;
@@ -228,6 +228,10 @@
    opacity: 0.9;
  }
 
+ #panel-content-graphs {
+   margin-top: 10px;
+ }
+
  #master-area {
    display: block;
    margin: 0;
@@ -241,9 +245,6 @@
       background: #222;
   }
 
-.tick text {
-  display: none;
-}
 
 #controls {
   z-index: 101010;
@@ -261,4 +262,21 @@
   width: 300px;
   background: rgba(0,0,0,0.5);
   line-height: 30px;
+}
+
+.x.axis text,
+.y.axis text {
+  fill: #aaa;
+  font-size: 10px;
+}
+
+.x.axis line,
+.y.axis line {
+  stroke: none;
+}
+
+.x.axis path,
+.y.axis path {
+  fill: none;
+  stroke: #666;
 }

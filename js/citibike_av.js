@@ -5,11 +5,21 @@ var tooltip = d3.select("#tooltip");
 
 
 
+var x = d3.time.scale.utc()
+    .range([0, 230])
+    .domain([new Date('2015-01-01T00:00:00.000Z'), new Date('2015-01-02T00:00:00.000Z')]);
+
+var y = d3.scale.linear()
+    .range([100, 0])
+    .domain([0,100]);
+
 var xAxis = d3.svg.axis()
-    .scale(24)
-    .tickValues([1, 2, 3, 5, 8, 13, 21]);
-
-
+    .scale(x)
+    .ticks(d3.time.hour, 6);
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .ticks(2)
+    .orient("right");
 
 
 var line = d3.svg.line()
@@ -34,23 +44,43 @@ d3.csv('data/open_matrix.csv', function(csv) {
 
 });
 
-  function getGraph(container, feature) {
+  function getGraph(container, feature, colored) {
 
       container.text('');
 
-      var svg = container.append("svg").attr("width", 220).attr("height", 100);
+      container.append("div").text("Stations availability each hour");
+
+      var svg = container.append("svg").attr("width", 260).attr("height", 130);
       console.log(feature);
+
+
 
         var f = feature.properties.citibike_id;
         if(data[f]) {
-          svg.append("svg:path")
+          svg.append("g")
+            .append("svg:path")
             .attr("fill", "none")
-            .style("stroke", colors[data[f].c])
+            .style("stroke", function() {
+              if(colored) return colors[data[f].c];
+                else return colors[0];
+            })
             .style("opacity", 0.7)
             .style("stroke-width", 2)
             .attr("id", "p" + f)
+            .attr("transform", "translate(0,10)")
             .attr("d", function() {
-              return line(data[f].h) })
+              return line(data[f].h) });
+
+          svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0,110)")
+            .call(xAxis);
+
+          svg.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(230,10)")
+            .call(yAxis);
+
         }
 
   }
