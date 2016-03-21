@@ -43,7 +43,7 @@ d3.select('#about-link').on('click', function() {
 
 function timeFormatter(t) {
   var dt;
-  if(t < 0) dt = 'Total';
+  if(t < 0) dt = 'Average';
   if(t == 0) dt = '12&nbsp;AM';
   if(t > 0 && t < 12) dt = t + '&nbsp;AM';
   if(t == 12) dt = '12&nbsp;PM';
@@ -183,7 +183,7 @@ function getSlider() {
 
     if(mode.feature) {
       citibike_id = mode.feature.properties.citibike_id;
-      stationRate = 0.7;
+      stationRate = 0.5;
     } else {
       stationRate = 1;
     }

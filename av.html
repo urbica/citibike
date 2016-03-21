@@ -14,7 +14,7 @@
 
 <style>
 body {
-    background: #fff;
+    background: #000;
 }
 #content {
   max-width: 480px;
@@ -31,14 +31,15 @@ var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 
 var tooltip = d3.select("#tooltip");
 
+
 var svg = d3.select("#graph").append("svg")
-    .attr("width", 300)
-    .attr("height", 100);
+    .attr("width", 1000)
+    .attr("height", 300);
 
 var line = d3.svg.line()
       .x(function(d,i) {
-        return i*10; })
-      .y(function(d,i) { return (100 - d*100); })
+        return i*30; })
+      .y(function(d,i) { return (300 - d*200); })
       .interpolate("basis");
 
 d3.csv('data/open_matrix.csv', function(csv) {

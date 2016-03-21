@@ -4,6 +4,14 @@ var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 var tooltip = d3.select("#tooltip");
 
 
+
+var xAxis = d3.svg.axis()
+    .scale(24)
+    .tickValues([1, 2, 3, 5, 8, 13, 21]);
+
+
+
+
 var line = d3.svg.line()
       .x(function(d,i) {
         return i*10; })
@@ -39,7 +47,7 @@ d3.csv('data/open_matrix.csv', function(csv) {
             .attr("fill", "none")
             .style("stroke", colors[data[f].c])
             .style("opacity", 0.7)
-            .style("stroke-width", 0.2)
+            .style("stroke-width", 2)
             .attr("id", "p" + f)
             .attr("d", function() {
               return line(data[f].h) })
