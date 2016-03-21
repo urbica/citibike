@@ -1,6 +1,6 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidXJiaWNhIiwiYSI6ImNpamFhZXNkOTAwMnp2bGtxOTFvMTNnNjYifQ.jUuvgnxQCuUBUpJ_k7xtkQ';
 
-var start = { z: 12.5, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17, minZoom: 11 },
+var start = { z: 12.2, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17, minZoom: 11 },
     master, left, right,
     masterStyle, leftStyle, rightStyle,
     masterArea = d3.select("#master-area"),
@@ -9,10 +9,10 @@ var start = { z: 12.5, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17
     panelHeader = d3.select("#panel-header"),
     panelContent = d3.select("#panel-content"),
     panelContentParams = d3.select("#panel-content-params"),
-    panelContentGraphs = d3.select("#panel-content-graphs"),
+    panelContentGraph = d3.select("#panel-content-graphs"),
     panelClose = d3.select("#panel-close"),
-    routesControl = d3.select("#routes"),
-    stationsControl = d3.select("#stations"),
+    routesControl = d3.select("#mode-routes"),
+    stationsControl = d3.select("#mode-stations"),
     about = d3.select("#about"),
     fade = d3.select("#fade"),
     interval, sliding,
@@ -77,7 +77,6 @@ master = new mapboxgl.Map({
 
   routesControl.on('click', function() { changeMode({id: 'routes', slice: currentMode.slice, feature: currentMode.feature ? currentMode.feature : false })});
   stationsControl.on('click', function() { changeMode({id: 'stations', slice: currentMode.slice, feature: currentMode.feature ? currentMode.feature : false })});
-
 
   //start application
   changeMode({ id: "routes", slice: -1 });
@@ -163,6 +162,13 @@ function getSlider() {
 
     console.log('prev:' + mode.id + ' set: ' + currentMode.id);
 
+    //managing legend
+    d3.select("#legend-routes").style("display", (mode.id == 'routes') ? "block" : "none");
+    d3.select("#legend-stations").style("display", (mode.id == 'stations') ? "block" : "none");
+
+    //managing modes classes
+    routesControl.attr("class", (mode.id == 'routes') ? "mode-selected" : "mode");
+    stationsControl.attr("class", (mode.id == 'stations') ? "mode-selected" : "mode");
 
 
     if(mode.slice < 0) {
@@ -177,56 +183,45 @@ function getSlider() {
 
     if(mode.feature) {
       citibike_id = mode.feature.properties.citibike_id;
-      stationRate = 0.3;
+      stationRate = 0.7;
     } else {
       stationRate = 1;
     }
 
 
     line_filters = {
-        l_line_1: ["all",[">",slice,0],["<",slice,700*sliceRate]],
-        l_line_2: ["all",[">=",slice,700*sliceRate],["<",slice,1200*sliceRate]],
-        l_line_3: ["all",[">=",slice,1500*sliceRate]],
-        r_line_1: ["all",[">",slice,0],["<",slice,70*sliceRate]],
-        r_line_2: ["all",[">=",slice,70*sliceRate],["<",slice,120*sliceRate]],
-        r_line_3: ["all",[">=",slice,120*sliceRate]]
+        l_line_1: ["all",[">",slice,0],["<",slice,700*sliceRate*stationRate]],
+        l_line_2: ["all",[">=",slice,700*sliceRate*stationRate],["<",slice,1200*sliceRate*stationRate]],
+        l_line_3: ["all",[">=",slice,1500*sliceRate*stationRate]],
+        r_line_1: ["all",[">",slice,0],["<",slice,70*sliceRate*stationRate]],
+        r_line_2: ["all",[">=",slice,70*sliceRate*stationRate],["<",slice,120*sliceRate*stationRate]],
+        r_line_3: ["all",[">=",slice,120*sliceRate*stationRate]]
       };
 
     stations_filters = {
-      av_20: ["all",[">=",slice_st,0.1],["<",slice_st,0.35]],
-      av_50: ["all",[">=",slice_st,0.35],["<",slice_st,0.65]],
-      av_80: ["all",[">=",slice_st,0.65],["<",slice_st,0.9]],
+      av_20: ["all",[">=",slice_st,0.1],["<",slice_st,0.30]],
+      av_50: ["all",[">=",slice_st,0.3],["<",slice_st,0.6]],
+      av_80: ["all",[">=",slice_st,0.6],["<",slice_st,0.9]],
       av_100: ["all",[">=",slice_st,0.9]]
     }
 
-//    console.log(stations_filters);
-  /*
-    if(mode.id == 'stations') {
 
-      if(feature) {
+    if(citibike_id) {
+      line_filters['l_line_1'].push(["==", "startid", citibike_id]);
+      line_filters['l_line_2'].push(["==", "startid", citibike_id]);
+      line_filters['l_line_3'].push(["==", "startid", citibike_id]);
+      line_filters['r_line_1'].push(["==", "endid", citibike_id]);
+      line_filters['r_line_2'].push(["==", "endid", citibike_id]);
+      line_filters['r_line_3'].push(["==", "endid", citibike_id]);
 
-      line_filters = {
-          l_line_1: ["all",["<",slice,500*sliceRate*stationRate], ["==", "startid",citibike_id]],
-          l_line_2: ["all",[">=",slice,500*sliceRate*stationRate],["<","total",1000*sliceRate*stationRate], ["==", "startid",citibike_id]],
-          l_line_3: ["all",[">=",slice,1000*sliceRate*stationRate], ["==", "startid",citibike_id]],
-          r_line_1: ["all",["<",slice,50*sliceRate*stationRate], ["==", "endid",citibike_id]],
-          r_line_2: ["all",[">=",slice,50*sliceRate*stationRate],["<","total",100*sliceRate*stationRate], ["==", "endid",citibike_id]],
-          r_line_3: ["all",[">=",slice,100*sliceRate*stationRate], ["==", "endid",citibike_id]]
-        };
+      /*
+      stations_filters['av_20'].push(["==", "citibike_id", citibike_id]);
+      stations_filters['av_50'].push(["==", "citibike_id", citibike_id]);
+      stations_filters['av_80'].push(["==", "citibike_id", citibike_id]);
+      stations_filters['av_100'].push(["==", "citibike_id", citibike_id]);
+      */
 
-
-      master.setLayoutProperty("s_stations_selection", "visibility", "visible");
-      master.setFilter("s_stations_selection", ["all",["==", "citibike_id",citibike_id]]);
-
-      }
-
-    } else {
-      master.setLayoutProperty("s_stations_selection", "visibility", "none");
     }
-
-    */
-
-    //apply
 
 
     if(master) {
@@ -274,7 +269,7 @@ function getSlider() {
 function getPanel(feature) {
   panelHeader.text('#' + feature.properties.citibike_id + ': '+ feature.properties.label)
   console.log(feature.properties);
-  panelContentParams.html('<span class="trips">Outgoing trips:&nbsp;'+ feature.properties.outgoing_trips + '</span>&nbsp;&nbsp;<span class="balanced">' + feature.properties.incoming_balancing + '</span>');
-
+  panelContentParams.html('Outgoing trips:&nbsp;'+ feature.properties.outgoing_trips + '<br/>Incoming balancing:&nbsp;' + feature.properties.incoming_balancing);
+  getGraph(panelContentGraph, feature);
 
 }

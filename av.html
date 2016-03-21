@@ -14,7 +14,7 @@
 
 <style>
 body {
-    background: #000;
+    background: #fff;
 }
 #content {
   max-width: 480px;
@@ -22,36 +22,24 @@ body {
 
 </style>
 
-<div id='content'></div>
+<div id='graph'></div>
 
 <script>
-var data = [];
-var colors = ['#eeeeee', '#4A90E2', '#F5A623', '#50E3C2'];
 
-var svg = d3.select("#content").append("svg")
-    .attr("width", 1200)
-    .attr("height", 960);
+var data = [];
+var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
+
+var tooltip = d3.select("#tooltip");
+
+var svg = d3.select("#graph").append("svg")
+    .attr("width", 300)
+    .attr("height", 100);
 
 var line = d3.svg.line()
       .x(function(d,i) {
-        return i*40; })
-      .y(function(d,i) { return (300 - d*200); })
+        return i*10; })
+      .y(function(d,i) { return (100 - d*100); })
       .interpolate("basis");
-
-var offset = 480, scale = 200;
-
-var lineHours = d3.svg.line()
-    .x(function(d,i) {
-        var ang = -1*(360*((i)/24)+90)*(Math.PI/180);
-        return offset+Math.cos(ang)*(d*scale);
-    })
-    .y(function(d,i) {
-        var ang = -1*(360*((i)/24)+90)*(Math.PI/180);
-        return offset+Math.sin(ang)*(d*scale);
-      })
-      .interpolate("basis");
-
-
 
 d3.csv('data/open_matrix.csv', function(csv) {
   csv.forEach(function(r) {
@@ -66,21 +54,40 @@ d3.csv('data/open_matrix.csv', function(csv) {
       id: +r.sid
     };
   });
-  console.log(data);
-  for(k in data) {
 
-    svg.append("svg:path")
-      .attr("fill", "none")
-      .style("stroke", colors[data[k].c])
-      .style("opacity", 1)
-      .style("stroke-width", 0.1)
-      .attr("id", k)
-      .attr("d", function() {
-      //  data[k].h.push(data[k].h[0])
-        return line(data[k].h) })
-  }
+  getGraph(svg);
 
 });
+
+  function getGraph(svg, station) {
+
+      for(k in data) {
+
+        svg.append("svg:path")
+          .attr("fill", "none")
+          .style("stroke", colors[data[k].c])
+          .style("opacity", 0.7)
+          .style("stroke-width", 0.2)
+          .attr("id", "p" + k)
+          .attr("d", function() {
+          //  data[k].h.push(data[k].h[0])
+            return line(data[k].h) })
+          .on("mouseover", function(d) {
+            var p = d3.select("#"+d3.event.target.id);
+            p.style("stroke-width", 2).style("opacity", 1).style("z-index", "1111111");
+            tooltip.style("opacity", 1);
+            tooltip.html(d3.event.target.id.substr(1))
+              .style("opacity", .9)
+              .style("left", (d3.event.pageX) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+            })
+          .on("mouseout", function(d) {
+              tooltip.style("opacity", 0);
+              var p = d3.select("#"+d3.event.target.id);
+              p.style("stroke-width", 0.2).style("opacity", 0.7).style("z-index", "none");
+          });
+      }
+  }
 
 </script>
 

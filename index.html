@@ -28,12 +28,17 @@
 </head>
 <body>
 
-<div id='header'><div id='about-link'>About</div><div id='logo'><span>NYC&nbsp;</span><span class='citibike'>Citi&nbsp;Bike&nbsp;</span>
-  <div class = 'mode' id='routes'>Rebalancing routes</div>
-  <div class = 'mode' id='stations'>Stations availability</div>
+<div id='header'>
+  <div id='about-link'>About</div>
+  <div id = 'modes'>
+  <div class = 'mode-selected' id='mode-routes'>Trips vs. Rebalancing</div>
+  <div class = 'mode' id='mode-stations'>Bikes availability</div>
+  </div>
+  <div id='logo'><span>NYC&nbsp;</span><span class='citibike'>Citi&nbsp;Bike&nbsp;</span>
 
 </div>
 </div>
+
 <div class = 'about' id='about'>
 
 
@@ -56,23 +61,22 @@
 </div>
 <div id='legend'>
   <div id='legend-routes'>
+    <div class='line'>Routes types:</div>
     <div class='line'><span class='line-trip'>—</span>&nbsp;<span>Trip routes</span></div>
     <div class='line'><span class='line-rebalancing'>—</span>&nbsp;<span>Rebalancing (x10)</span></div>
     <div class='line'>Shown only frequent trips and rebalancing directions.</div>
   </div>
   <div id='legend-stations'>
-    <div class='line'>Percent of bikes on station</div>
-    <div class='line'><span class='station'><span class='station-empty'></span></span>&nbsp;<span>Empty stations (less 10 percent of bikes available)</span>
-    </div>
-    <div class='line'><span class='station'><span class='station-10'></span></span>&nbsp;<span>Empty stations</span>
-    </div>
-    <div class='line'><span class='station'><span class='station-50'></span></span>&nbsp;<span>Empty stations</span>
-    </div>
-    <div class='line'><span class='station'><span class='station-empty'></span></span>&nbsp;<span>Empty stations</span>
-    </div>
-    <div class='line'><span class='station'><span class='station-empty'></span></span>&nbsp;<span>Empty stations</span>
-    </div>
-
+    <div class='line'>Percent of bikes available on stations:</div>
+    <div class='line'><div class = 'av' id='av_0'></div><div class='caption'>&lt;10%,&nbsp;empty</div></div>
+    <div class='line'><div class = 'av' id='av_20'></div><div class='caption'>10&nbsp;—&nbsp;30%</div></div>
+    <div class='line'><div class = 'av' id='av_50'></div><div class='caption'>30&nbsp;—&nbsp;60%</div></div>
+    <div class='line'><div class = 'av' id='av_80'></div><div class='caption'>60&nbsp;— 90%&nbsp;</div></div>
+    <div class='line'><div class = 'av' id='av_100'></div><div class='caption'>&gt;90%,&nbsp;full</div></div>
+    <div class='line'>Stations types (clusters):</div>
+    <div class='line'><div class = 'av' id='cluster_1'></div><div class='caption'>Cluster 1</div></div>
+    <div class='line'><div class = 'av' id='cluster_2'></div><div class='caption'>Cluster 2</div></div>
+    <div class='line'><div class = 'av' id='cluster_3'></div><div class='caption'>Cluster 3</div></div>
   </div>
 </div>
 <a href="http://urbica.co"><div id='urbica-logo'></div></a>
@@ -81,11 +85,15 @@
   <div id='panel-header'></div>
   <div id='panel-content'>
     <div id='panel-content-params'></div>
-    <div id='panel-content-graphs'></div>
+    <div id='panel-content-graphs'>
+      <div id='graph'></div>
+    </div>
     <div id='panel-content-exception'></div>
   </div>
 </div>
+<div id = 'tooltip'></div>
 <div id = 'controls'>
+
   <div id='slider-area'>
     <div id='slider'></div>
   </div>
@@ -95,5 +103,6 @@
 </div>
 
 <script src='js/citibike.js'></script>
+<script src='js/citibike_av.js'></script>
 </body>
 </html>

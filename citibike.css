@@ -32,10 +32,54 @@
     color: #eee;
   }
 
-  #logo { font-weight: 600; margin-left: 20px; font-size: 24px; }
+  #logo { float: left; font-weight: 600; margin-left: 20px; font-size: 24px; }
   #about-link { float: right; font-weight: 300; margin-right: 20px; cursor: pointer; }
   .citibike, .trips { color: #08f; }
   .rebalanced, .balanced { color: #f50; }
+
+  #modes {
+    margin-left: 20px;
+    display: inline-block;
+  }
+
+  .mode, .mode-selected {
+      display: inline-block;
+      height: 28px;
+      line-height: 28px;
+      color: #eee;
+      border-radius: 2px;
+      z-index: 3;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 10px;
+      padding: 5px 10px;
+  }
+
+  .mode-selected {
+    background: #444;
+  }
+
+  .mode:hover, .mode:active,
+  .mode-selected:hover, .mode-selected:active {
+      color: #fff;
+  }
+
+
+  #graph {
+  }
+
+
+  #tooltip {
+  	font-size: 24px;
+  	color: #fff;
+  	background: rgba(30,30,30,0.8);
+  	color: #f0f0f0;
+  	padding: 5px;
+  	max-width: 250px;
+  	font-size: 12px;
+  	position: absolute;
+  	z-index: 111100666;
+  }
 
   #about {
     display: none;
@@ -105,16 +149,27 @@
     z-index: 1012022;
     top: 60px;
     right: 10px;
-    width: 120px;
-    background: rgba(12, 12, 12, 0.8);
+    width: 200px;
+    background: rgba(12, 12, 12, 0.85);
     padding: 10px;
     font-size: 12px;
   }
 
-  .line { line-height: 20px; }
+  #legend-routes, #legend-stations { display: none; }
+
+  .line { line-height: 16px; display: flex; margin-top: 5px; }
   .line-trip { color: #08f; font-weight: 600; }
   .line-rebalancing { color: #f50; font-weight: 600; }
-
+  .caption { display: inline-block; }
+  .av { display: inline-block; width: 16px; height: 16px; margin-right: 8px; }
+  #av_0 { background: url('img/av_0.svg') center center no-repeat; }
+  #av_20 { background: url('img/av_20.svg') center center no-repeat; }
+  #av_50 { background: url('img/av_50.svg') center center no-repeat; }
+  #av_80 { background: url('img/av_80.svg') center center no-repeat; }
+  #av_100 { background: url('img/av_100.svg') center center no-repeat; }
+  #cluster_1 { background: url('img/cluster_1.svg') center center no-repeat; }
+  #cluster_2 { background: url('img/cluster_2.svg') center center no-repeat; }
+  #cluster_3 { background: url('img/cluster_3.svg') center center no-repeat; }
 
   #urbica-logo {
     position: absolute;
@@ -206,27 +261,4 @@
   width: 300px;
   background: rgba(0,0,0,0.5);
   line-height: 30px;
-}
-
-
-.mode {
-    display: inline-block;
-  /*  width: 44px; */
-    height: 20px;
-    line-height: 20px;
-    color: #fff;
-    border: 2px solid #dedede;
-    border-radius: 2px;
-    background: #111;
-    z-index: 3;
-    cursor: pointer;;
-    font-size: 11px;
-    font-weight: 600;
-    margin-right: 10px;
-}
-
-.mode:hover, .mode:active {
-    border: 2px solid #f0f0f0;
-    background: #444;
-
 }
