@@ -155,6 +155,10 @@
     font-size: 12px;
   }
 
+  #legend-button {
+    cursor: pointer;
+  }
+
   #legend-routes, #legend-stations { display: none; }
 
   .line { line-height: 16px; display: flex; margin-top: 5px; }

@@ -152,7 +152,7 @@ function getSlider() {
       })
   );
 
-  d3.select("#handle-one").text('Total');
+  d3.select("#handle-one").text('Average');
 }
 
   function changeMode(mode) {
