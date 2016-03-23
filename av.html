@@ -23,6 +23,9 @@ h3 { color: white; text-align: center; }
   max-width: 480px;
 }
 
+  #content {
+    text-align: center;
+  }
   #graph {
     background: black;
     display: inline-block;
@@ -59,7 +62,9 @@ h3 { color: white; text-align: center; }
 }
 
 
+
 </style>
+<div id = 'content'>
 <div id='tooltip'></div>
 <h3>Stations availability</h3>
 <div id='availability'></div>
@@ -69,7 +74,7 @@ h3 { color: white; text-align: center; }
 <div id='outgoing_mean'></div>
 <h3>Stations rebalancing (x10)</h3>
 <div id='mean_rb'></div>
-
+</div>
 <script>
 
 var data_av = [], data_in = [], data_out = [], data_rb = [];
