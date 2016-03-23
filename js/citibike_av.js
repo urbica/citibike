@@ -21,7 +21,6 @@ var yAxis = d3.svg.axis()
     .ticks(2)
     .orient("right");
 
-
 var line = d3.svg.line()
       .x(function(d,i) {
         return i*10; })

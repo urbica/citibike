@@ -55,13 +55,12 @@ body {
   stroke: #666;
 }
 
+h3 { color: white; }
+
 
 </style>
 <div id='tooltip'></div>
-<div id='availability'></div>
-<div id='incoming_mean'></div>
-<div id='outgoing_mean'></div>
-<div id='mean_rb'></div>
+<div id='graph'></div>
 
 <script>
 
@@ -69,8 +68,8 @@ var data_av = [], data_in = [], data_out = [], data_rb = [];
 var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 
 var offset = 30,
-    width = 800,
-    height = 200,
+    width = 600,
+    height = 50,
     step = width/23;
 
 var tooltip = d3.select("#tooltip");
@@ -93,11 +92,19 @@ var yAxis = d3.svg.axis()
 .orient("left");
 
 var line = d3.svg.line()
-.x(function(d,i) {
-  return i*step;
-})
+  .x(function(d,i) {
+    return i*step;
+  })
   .y(function(d,i) { return (height - d*height/50); })
   .interpolate("basis");
+
+  var line_av = d3.svg.line()
+    .x(function(d,i) {
+      return i*step;
+    })
+    .y(function(d,i) { return (height - d*height); })
+    .interpolate("basis");
+
 
   d3.csv('data/open_matrix.csv', function(csv) {
     csv.forEach(function(r) {
@@ -112,9 +119,6 @@ var line = d3.svg.line()
         id: +r.sid
       };
     });
-    getGraph("availability",data_av, "white");
-  });
-
 
     d3.csv('data/incoming_mean.csv', function(csv) {
       csv.forEach(function(r) {
@@ -129,93 +133,111 @@ var line = d3.svg.line()
           id: +r.sid
         };
       });
-      console.log(data_in);
-      getGraph("incoming_mean",data_in, "red");
-    });
 
 
-      d3.csv('data/outgoing_mean.csv', function(csv) {
-          csv.forEach(function(r) {
-            //import data
-            var h = [];
-            for(i = 0; i < 24; i++) {
-              h.push(Math.round(+r[i]*1000)/1000);
-            }
-            data_out[r.sid] = {
-              c: +r.cluster,
-              h: h,
-              id: +r.sid
-            };
-          });
-          getGraph("outgoing_mean",data_out, "blue");
-        });
+
+            d3.csv('data/outgoing_mean.csv', function(csv) {
+                csv.forEach(function(r) {
+                  //import data
+                  var h = [];
+                  for(i = 0; i < 24; i++) {
+                    h.push(Math.round(+r[i]*1000)/1000);
+                  }
+                  data_out[r.sid] = {
+                    c: +r.cluster,
+                    h: h,
+                    id: +r.sid
+                  };
+                });
 
 
-        d3.csv('data/mean_rb.csv', function(csv) {
-            csv.forEach(function(r) {
+                d3.csv('data/mean_rb.csv', function(csv) {
+                    csv.forEach(function(r) {
 
-              //import data
-              var h = [];
-              for(i = 0; i < 24; i++) {
-                 h.push(Math.round(+r[i]*1000)/1000);
-              }
-              data_rb[r.sid] = {
-                c: +r.cluster,
-                h: h,
-                id: +r.sid
-                };
+                      //import data
+                      var h = [];
+                      for(i = 0; i < 24; i++) {
+                         h.push(Math.round(+r[i]*1000)/1000);
+                      }
+                      data_rb[r.sid] = {
+                        c: +r.cluster,
+                        h: h,
+                        id: +r.sid
+                        };
+                      });
+                      getGraph();
+
+                  });
+
+
               });
-              getGraph("mean_rb",data_rb, "purple");
+      });
 
-          });
+  });
 
 
-  function getGraph(conatiner_name, data, color) {
 
-    var svg = d3.select("#"+conatiner_name).append("svg")
-    .attr("width", (offset*2+width))
-    .attr("height", (offset*2+height));
 
-    for(k in data) {
 
-      svg.append("svg:path")
-      .attr("fill", "none")
-      .style("stroke", color) //colors[data[k].c]
-      .style("opacity", 0.8)
-      .style("stroke-width", 0.3)
-      .attr("transform", "translate("+offset+", "+ offset + ")")
-      .attr("id", "p" + k)
-      .attr("d", function() {
-        return line(data[k].h) })
-        .on("mouseover", function(d) {
-          var p = d3.select("#"+d3.event.target.id);
-          console.log(data[d3.event.target.id.substr(1)]);
-          p.style("stroke-width", 2).style("opacity", 1).style("z-index", "1111111");
-          tooltip.style("opacity", 1);
-          tooltip.html("#" + d3.event.target.id.substr(1))
-          .style("opacity", .9)
-          .style("left", (d3.event.pageX) + "px")
-          .style("top", (d3.event.pageY - 28) + "px");
-        })
-        .on("mouseout", function(d) {
-          tooltip.style("opacity", 0);
-          var p = d3.select("#"+d3.event.target.id);
-          p.style("stroke-width", 0.2).style("opacity", 0.7).style("z-index", "none");
-        });
+
+
+
+
+  function getGraph() {
+
+
+    for(k in data_av) {
+
+      d3.select("#graph").append("h3").text(data_av[k].id);
+      var svg = d3.select("#graph").append("svg")
+      .attr("width", (offset*2+width))
+      .attr("height", (offset*2+height));
+
+      console.log(data_av[k].id);
+      getPath_av(svg, data_av[k], "white");
+      getPath(svg, data_out[k], "red");
+      getPath(svg, data_rb[k], "purple");
+
+
       }
-
 
       svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(" + offset + "," + (height+offset) + ")")
       .call(xAxis);
-
+/*
       svg.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + offset + ", " + offset + ")")
       .call(yAxis);
-
+*/
     }
+
+function getPath(svg, path_data, color) {
+
+        svg.append("svg:path")
+        .attr("fill", "none")
+        .style("stroke", color) //colors[data[k].c]
+        .style("opacity", 1)
+        .style("stroke-width", 1)
+        .attr("transform", "translate("+offset+", "+ offset + ")")
+        .attr("id", "p" + k)
+        .attr("d", function() {
+          return line(path_data.h) });
+}
+
+function getPath_av(svg, path_data, color) {
+
+        svg.append("svg:path")
+        .attr("fill", "none")
+        .style("stroke", color) //colors[data[k].c]
+        .style("opacity", 1)
+        .style("stroke-width", 1)
+        .attr("transform", "translate("+offset+", "+ offset + ")")
+        .attr("id", "p" + k)
+        .attr("d", function() {
+          return line_av(path_data.h) });
+}
 
     </script>
 
