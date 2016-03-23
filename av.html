@@ -14,8 +14,11 @@
 
 <style>
 body {
-  background: #333;
+  background: black;
 }
+
+h3 { color: white; text-align: center; }
+
 #content {
   max-width: 480px;
 }
@@ -58,9 +61,13 @@ body {
 
 </style>
 <div id='tooltip'></div>
+<h3>Stations availability</h3>
 <div id='availability'></div>
+<h3>Incoming trips</h3>
 <div id='incoming_mean'></div>
+<h3>Outgoing trips</h3>
 <div id='outgoing_mean'></div>
+<h3>Stations rebalancing (x10)</h3>
 <div id='mean_rb'></div>
 
 <script>
@@ -157,7 +164,7 @@ var line = d3.svg.line()
               //import data
               var h = [];
               for(i = 0; i < 24; i++) {
-                 h.push(Math.round(+r[i]*1000)/1000);
+                 h.push(Math.round(+r[i]*1000)/100);
               }
               data_rb[r.sid] = {
                 c: +r.cluster,
