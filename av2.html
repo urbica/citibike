@@ -105,6 +105,12 @@ var line = d3.svg.line()
     .y(function(d,i) { return (height - d*height); })
     .interpolate("basis");
 
+    var line_rb = d3.svg.line()
+      .x(function(d,i) {
+        return i*step;
+      })
+      .y(function(d,i) { return (height - d*height/5); })
+      .interpolate("basis");
 
   d3.csv('data/open_matrix.csv', function(csv) {
     csv.forEach(function(r) {
@@ -196,7 +202,7 @@ var line = d3.svg.line()
       console.log(data_av[k].id);
       getPath_av(svg, data_av[k], "white");
       getPath(svg, data_out[k], "red");
-      getPath(svg, data_rb[k], "purple");
+      getPath_rb(svg, data_rb[k], "purple");
 
 
       }
@@ -237,6 +243,19 @@ function getPath_av(svg, path_data, color) {
         .attr("id", "p" + k)
         .attr("d", function() {
           return line_av(path_data.h) });
+}
+
+function getPath_rb(svg, path_data, color) {
+
+        svg.append("svg:path")
+        .attr("fill", "none")
+        .style("stroke", color) //colors[data[k].c]
+        .style("opacity", 1)
+        .style("stroke-width", 1)
+        .attr("transform", "translate("+offset+", "+ offset + ")")
+        .attr("id", "p" + k)
+        .attr("d", function() {
+          return line_rb(path_data.h) });
 }
 
     </script>
