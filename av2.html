@@ -64,7 +64,7 @@ h3 { color: white; }
 
 <script>
 
-var data_av = [], data_in = [], data_out = [], data_rb = [];
+var data_av = [], data_in = [], data_out = [], data_rb = [], data_ordered = [];
 var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 
 var offset = 30,
@@ -131,7 +131,7 @@ var line = d3.svg.line()
         //import data
         var h = [];
         for(i = 0; i < 24; i++) {
-          h.push(Math.round(+r[i]*1000)/1000);
+          h.push(+r[i]);
         }
         data_in[r.sid] = {
           c: +r.cluster,
@@ -146,14 +146,18 @@ var line = d3.svg.line()
                 csv.forEach(function(r) {
                   //import data
                   var h = [];
+                  var t = 0;
                   for(i = 0; i < 24; i++) {
-                    h.push(Math.round(+r[i]*1000)/1000);
+                    t += +r[i];
+                    h.push(+r[i]);
                   }
                   data_out[r.sid] = {
                     c: +r.cluster,
                     h: h,
-                    id: +r.sid
+                    id: +r.sid,
+                    t: t
                   };
+                  data_ordered.push({id: +r.sid, t: t});
                 });
 
 
@@ -163,7 +167,7 @@ var line = d3.svg.line()
                       //import data
                       var h = [];
                       for(i = 0; i < 24; i++) {
-                         h.push(Math.round(+r[i]*1000)/1000);
+                         h.push(+r[i]);
                       }
                       data_rb[r.sid] = {
                         c: +r.cluster,
@@ -171,6 +175,16 @@ var line = d3.svg.line()
                         id: +r.sid
                         };
                       });
+
+                      //sort array data_ordered
+
+                      console.log(data_ordered);
+                      data_ordered.sort(function (a,b) {
+                        return a.t > b.t;
+                      });
+
+                      console.log(data_ordered);
+
                       getGraph();
 
                   });
@@ -191,22 +205,21 @@ var line = d3.svg.line()
 
   function getGraph() {
 
+    data_ordered.forEach(function(k) {
 
-    for(k in data_av) {
 
-      d3.select("#graph").append("h3").text(data_av[k].id);
+      d3.select("#graph").append("h3").text(data_out[k.id].id + "("+ k.t + ")");
       var svg = d3.select("#graph").append("svg")
       .attr("width", (offset*2+width))
       .attr("height", (offset*2+height));
 
-      console.log(data_av[k].id);
-      getPath_av(svg, data_av[k], "white");
-      getPath(svg, data_out[k], "red");
-      getPath(svg, data_in[k], "blue");
-      getPath_rb(svg, data_rb[k], "purple");
+      console.log(data_av[k.id].id);
+      getPath_av(svg, data_av[k.id], "white");
+      getPath(svg, data_out[k.id], "red");
+      getPath(svg, data_in[k.id], "blue");
+      getPath_rb(svg, data_rb[k.id], "purple");
 
-
-      }
+    });
 
       svg.append("g")
       .attr("class", "x axis")
@@ -228,7 +241,6 @@ function getPath(svg, path_data, color) {
         .style("opacity", 1)
         .style("stroke-width", 1)
         .attr("transform", "translate("+offset+", "+ offset + ")")
-        .attr("id", "p" + k)
         .attr("d", function() {
           return line(path_data.h) });
 }
@@ -241,7 +253,6 @@ function getPath_av(svg, path_data, color) {
         .style("opacity", 1)
         .style("stroke-width", 1)
         .attr("transform", "translate("+offset+", "+ offset + ")")
-        .attr("id", "p" + k)
         .attr("d", function() {
           return line_av(path_data.h) });
 }
@@ -254,7 +265,6 @@ function getPath_rb(svg, path_data, color) {
         .style("opacity", 1)
         .style("stroke-width", 1)
         .attr("transform", "translate("+offset+", "+ offset + ")")
-        .attr("id", "p" + k)
         .attr("d", function() {
           return line_rb(path_data.h) });
 }
