@@ -195,7 +195,7 @@
    z-index: 1012022;
    top: 60px;
    left: 10px;
-   width: 260px;
+   width: 290px;
    background: rgba(12, 12, 12, 0.8);
    color: #eee;
    padding: 10px;
@@ -276,11 +276,44 @@
 
 .x.axis line,
 .y.axis line {
-  stroke: none;
+  stroke: #aaa;
 }
 
 .x.axis path,
 .y.axis path {
   fill: none;
   stroke: #666;
+}
+
+
+.y.axis-trips text {
+  fill: #aaa;
+  font-size: 10px;
+}
+
+.y.axis-trips line {
+  stroke: #0cf;
+  opacity: 0.5;
+}
+
+.y.axis-trips path {
+  fill: none;
+  stroke: #0cf;
+  opacity: 0.5;
+}
+
+.y.axis-balancing text {
+  font-size: 10px;
+  fill: #aaa;
+}
+
+.y.axis-balancing line {
+  stroke: #f60;
+  opacity: 0.5;
+}
+
+.y.axis-balancing path {
+  fill: none;
+  stroke: #f60;
+  opacity: 0.5;
 }

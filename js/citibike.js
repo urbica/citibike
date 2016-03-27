@@ -254,12 +254,9 @@ function getSlider() {
 
 
 
-    //setting the currentMode
-    currentMode = mode;
-
   if(mode.feature) {
     console.log(mode.feature);
-    if(master.getZoom() <= 13) {
+    if(master.getZoom() <= 13 && !currentMode.feature) {
       master.flyTo({
         center: [mode.feature.properties.longitude,mode.feature.properties.latitude],
         zoom: 13,
@@ -272,6 +269,8 @@ function getSlider() {
     panel.style("display", "none");
   }
 
+  //setting the currentMode
+  currentMode = mode;
 }
 
 function getPanel(feature, mode) {
@@ -279,6 +278,9 @@ function getPanel(feature, mode) {
   console.log(feature.properties);
   panelContentParams.html('Outgoing trips:&nbsp;'+ feature.properties.outgoing_trips + '<br/>Incoming balancing:&nbsp;' + feature.properties.incoming_balancing);
   var colored = (mode == 'stations');
-  getGraph(panelContentGraph, feature, colored);
+  panelContentGraph.text('');
+  getAvailabilityGraph(panelContentGraph, feature.properties.citibike_id);
+  getRoutesGraph(panelContentGraph, feature.properties.citibike_id);
+
 
 }
