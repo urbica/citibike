@@ -9,6 +9,8 @@
                user-select: none;
   }
 
+  .mobile { display: none; }
+
   a, a:visited { color: #fff; }
   a:hover, a:active { color: #08f; }
 
@@ -65,8 +67,6 @@
   }
 
 
-  #graph {
-  }
 
 
   #tooltip {
@@ -316,4 +316,14 @@
   fill: none;
   stroke: #f60;
   opacity: 0.5;
+}
+
+
+@media screen and (max-width: 480px) {
+    .desktop {
+        display: none;
+    }
+    .mobile {
+      display: inline;
+    }
 }

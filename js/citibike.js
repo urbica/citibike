@@ -214,13 +214,12 @@ function getSlider() {
       line_filters['r_line_2'].push(["==", "endid", citibike_id]);
       line_filters['r_line_3'].push(["==", "endid", citibike_id]);
 
-      /*
-      stations_filters['av_20'].push(["==", "citibike_id", citibike_id]);
-      stations_filters['av_50'].push(["==", "citibike_id", citibike_id]);
-      stations_filters['av_80'].push(["==", "citibike_id", citibike_id]);
-      stations_filters['av_100'].push(["==", "citibike_id", citibike_id]);
-      */
+      stations_filters['s_selection'] = ["==", "citibike_id", citibike_id];
+      stations_filters['s_selection_label'] = ["==", "citibike_id", citibike_id];
 
+    } else {
+      stations_filters['s_selection'] = ["==", "citibike_id", 0];
+      stations_filters['s_selection_label'] = ["==", "citibike_id", 0];
     }
 
 
