@@ -29,12 +29,12 @@
 <body>
 
 <div id='header'>
-  <div id='about-link'>About</div>
+  <div id='about-link'><span class="desktop">About</span></div>
   <div id = 'modes'>
-  <div class = 'mode-selected' id='mode-routes'><span class='desktop'>Trips vs. Rebalancing</span><span class='mobile'>Routes</span></div>
+  <div class = 'mode-selected' id='mode-routes'><span class='desktop'>Trips&nbsp;vs.&nbsp;Rebalancing</span><span class='mobile'>Routes</span></div>
   <div class = 'mode' id='mode-stations'><span class='desktop'>Bikes availability</span><span class='mobile'>Availability</span></div>
   </div>
-  <div id='logo'><span class="desktop">NYC&nbsp;</span><span class='citibike'>Citi&nbsp;Bike&nbsp;</span>
+  <div id='logo'><span class='desktop'>NYC&nbsp;</span><span class='citibike desktop'>Citi&nbsp;Bike&nbsp;</span>
 
 </div>
 </div>
@@ -59,8 +59,7 @@
   </div>
   </div>
 </div>
-<div id='legend'>
-  <div id ='legend-button'>Legend</div>
+<div id='legend' class='desktop'>
   <div id='legend-routes'>
     <div class='line'>Routes types:</div>
     <div class='line'><span class='line-trip'>—</span>&nbsp;<span>Trip routes</span></div>
@@ -82,9 +81,9 @@
 </div>
 <a href="http://urbica.co"><div id='urbica-logo'></div></a>
 <div id='panel'>
-  <div id='panel-close'></div>
+  <div id='panel-close' class='desktop'></div>
   <div id='panel-header'></div>
-  <div id='panel-content'>
+  <div id='panel-content' class='desktop'>
     <div id='panel-content-params'></div>
     <div id='panel-content-graphs'>
       <div id='graph'></div>
@@ -94,7 +93,6 @@
 </div>
 <div id = 'tooltip'></div>
 <div id = 'controls'>
-
   <div id='slider-area'>
     <div id='slider'></div>
   </div>
