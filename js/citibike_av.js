@@ -129,8 +129,6 @@ d3.csv('data/mean_rb.csv', function(csv) {
           maxBalancing = d3.max(dataBalancing[f].h),
           max = (maxTrips >= maxBalancing*10) ? maxTrips : maxBalancing*10;
 
-          console.log('max: ' + max + ' tripsmax: ' + maxTrips + ' balancedmax: ' + maxBalancing);
-
       var yTrips = d3.scale.linear()
       .range([height, 0])
       .domain([0,max]),

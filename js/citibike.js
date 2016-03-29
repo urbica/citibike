@@ -83,6 +83,7 @@ master = new mapboxgl.Map({
 
 })
 .on('click', function(e) {
+  console.log(e.point);
        master.featuresAt(e.point, {radius: 10}, function (err, features) {
            if (err) throw err;
            //filling features array
@@ -157,10 +158,8 @@ function getSlider() {
 
   function changeMode(mode) {
 
-    console.log(mode);
-    var line_filters = {}, stations_filters = {}, slice, slice_st, sliceRate, stationRate, citibike_id;
 
-    console.log('prev:' + mode.id + ' set: ' + currentMode.id);
+    var line_filters = {}, stations_filters = {}, slice, slice_st, sliceRate, stationRate, citibike_id;
 
     //managing legend
     d3.select("#legend-routes").style("display", (mode.id == 'routes') ? "block" : "none");
@@ -274,7 +273,6 @@ function getSlider() {
 
 function getPanel(feature, mode) {
   panelHeader.text('#' + feature.properties.citibike_id + ': '+ feature.properties.label)
-  console.log(feature.properties);
   panelContentParams.html('Outgoing trips:&nbsp;'+ feature.properties.outgoing_trips + '<br/>Incoming balancing:&nbsp;' + feature.properties.incoming_balancing);
   var colored = (mode == 'stations');
   panelContentGraph.text('');

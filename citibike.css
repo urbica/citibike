@@ -202,7 +202,7 @@
    display: none;
  }
 
- #panel-header {
+ #panel-header, #stations-header {
    font-weight: 600;
    margin-bottom: 10px;
    text-align: left;;
@@ -235,6 +235,34 @@
  #panel-content-graphs {
    margin-top: 10px;
  }
+
+
+
+  #stations {
+    position: absolute;
+    z-index: 1012020;
+    top: 60px;
+    left: 10px;
+    width: 190px;
+    background: rgba(12, 12, 12, 0.8);
+    color: #eee;
+    padding: 10px;
+  }
+
+  #stations-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+ .sort-mode-caption, .sort-mode-selected, .sort-mode { font-size: 13px; display: inline-block; padding: 5px; border-radius: 3px; }
+ .sort-mode-caption { color: #aaa; }
+ .sort-mode-selected, .sort-mode { cursor: pointer; color: #eee; }
+ .sort-mode-selected { background: #333; }
+
+ .item { font-size: 12px; line-height: 22px; cursor: pointer; }
+ .item-value { display: inline-block; float: right; }
+ .item-name { display: inline-block; }
+ .item-id { display: inline-block;  }
 
  #master-area {
    display: block;
