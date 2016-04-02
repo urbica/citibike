@@ -98,21 +98,27 @@
   <div id='panel-close' class='desktop'></div>
   <div id='panel-header'></div>
   <div id='panel-content' class='desktop'>
+
     <div id='panel-params'>
-      <div id='panel-params-totals' class='param'></div>
-<!--      <div id='panel-params-subheader' class='param'>Hourly stats ()</div> -->
-      <div id='panel-params-trips' class='param'>
+      <div id='panel-params-trips-total' class='param'>
+          <div id='panel-params-trips-total-value' class='param-value'></div>
+          <div id='panel-params-trips-total-caption' class='param-caption'>Outgoing trips total:</div>
+      </div>
+      <div id='panel-params-balancing-total' class='param'>
+          <div id='panel-params-balancing-total-value' class='param-value'></div>
+          <div id='panel-params-balancing-total-caption' class='param-caption'>Incoming balancing total:</div>
+      </div>
       <div id='panel-params-trips' class='param'>
           <div id='panel-params-trips-value' class='param-value'></div>
-          <div id='panel-params-trips-caption' class='param-caption'>Trips per hour,&nbsp;<span class='time'></span></div>
+          <div id='panel-params-trips-caption' class='param-caption'>Trips per hour,&nbsp;(<span class='time' id='time-trips'></span>)</div>
       </div>
       <div id='panel-params-balancing' class='param'>
         <div id='panel-params-balancing-value' class='param-value'></div>
-        <div id='panel-params-balancing-caption' class='param-caption'>Trips per hour,&nbsp;<span class='time'></span></div>
+        <div id='panel-params-balancing-caption' class='param-caption'>Trips per hour,&nbsp;()<span class='time'  id='time-balancing'></span>)</div>
       </div>
       <div id='panel-params-availability' class='param'>
         <div id='panel-params-availability-value' class='param-value'></div>
-        <div id='panel-params-availability-caption' class='param-caption'>Percent of bikes available &nbsp;<span class='time'></span></div>
+        <div id='panel-params-availability-caption' class='param-caption'>Percent of bikes available &nbsp;(<span class='time'  id='time-availability'></span>)</div>
       </div>
     </div>
     <div id='panel-content-graphs'>
@@ -120,6 +126,7 @@
     </div>
     <div id='panel-content-exception'></div>
   </div>
+</div>
 </div>
 <div id = 'tooltip'></div>
 <div id = 'controls'>

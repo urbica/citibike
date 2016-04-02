@@ -277,7 +277,9 @@ function getPanel(feature, mode) {
   if(mode.feature) updateParams(mode, feature);
 
   panelHeader.text('#' + feature.properties.citibike_id + ': '+ feature.properties.label)
-  d3.select("#panel-params-totals").html('Trips:&nbsp;'+ feature.properties.outgoing_trips + '<br/>Incoming balancing:&nbsp;' + feature.properties.incoming_balancing);
+  d3.select("#panel-params-trips-total-value").text(feature.properties.outgoing_trips);
+  d3.select("#panel-params-balancing-total-value").text(feature.properties.incoming_balancing);
+
   panelContentGraph.text('');
 
 
@@ -311,6 +313,10 @@ function updateParams(mode,feature) {
       }
       balancing = Math.round(balancing*100)/100;
       d3.select("#panel-params-balancing-value").text(balancing);
+
+      d3.select("#time-trips").html(timeFormatter(mode.slice));
+      d3.select("#time-balancing").html(timeFormatter(mode.slice));
+      d3.select("#time-availability").html(timeFormatter(mode.slice));
 
 
 }
