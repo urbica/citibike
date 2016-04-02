@@ -1,5 +1,6 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidXJiaWNhIiwiYSI6ImNpamFhZXNkOTAwMnp2bGtxOTFvMTNnNjYifQ.jUuvgnxQCuUBUpJ_k7xtkQ';
 
+
 var start = { z: 12.2, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17, minZoom: 11 },
     master, left, right,
     masterStyle, leftStyle, rightStyle,
@@ -48,7 +49,7 @@ function timeFormatter(t) {
   if(t > 0 && t < 12) dt = t + '&nbsp;AM';
   if(t == 12) dt = '12&nbsp;PM';
   if(t > 12) dt = (t-12) + '&nbsp;PM';
-  d3.select("#handle-one").html(dt);
+  return dt;
 }
 
 master = new mapboxgl.Map({
@@ -133,7 +134,7 @@ function getSlider() {
     d3.slider()
       .min(-1).max(23).step(1)
       .on("slide", function(evt, value) {
-        timeFormatter(Math.round(value));
+        d3.select("#handle-one").html(timeFormatter(Math.round(value)));
         if(!sliding) {
           sliding = true;
           interval = setInterval(function () {
@@ -253,7 +254,6 @@ function getSlider() {
 
 
   if(mode.feature) {
-    console.log(mode.feature);
     if(master.getZoom() <= 13 && !currentMode.feature) {
       master.flyTo({
         center: [mode.feature.properties.longitude,mode.feature.properties.latitude],
@@ -261,7 +261,7 @@ function getSlider() {
         speed: 0.3
       });
     }
-    getPanel(mode.feature, mode.id);
+    getPanel(mode.feature, mode);
     panel.style("display", "block");
   } else {
     panel.style("display", "none");
@@ -272,12 +272,45 @@ function getSlider() {
 }
 
 function getPanel(feature, mode) {
+
+
+  if(mode.feature) updateParams(mode, feature);
+
   panelHeader.text('#' + feature.properties.citibike_id + ': '+ feature.properties.label)
-  panelContentParams.html('Outgoing trips:&nbsp;'+ feature.properties.outgoing_trips + '<br/>Incoming balancing:&nbsp;' + feature.properties.incoming_balancing);
-  var colored = (mode == 'stations');
+  d3.select("#panel-params-totals").html('Trips:&nbsp;'+ feature.properties.outgoing_trips + '<br/>Incoming balancing:&nbsp;' + feature.properties.incoming_balancing);
   panelContentGraph.text('');
+
+
   getAvailabilityGraph(panelContentGraph, feature.properties.citibike_id);
   getRoutesGraph(panelContentGraph, feature.properties.citibike_id);
+}
+
+function updateParams(mode,feature) {
+  var availability, trips, balancing;
+
+      if(mode.slice>=0) {
+        availability = dataAvailability[feature.properties.citibike_id].h[mode.slice];
+      } else {
+        availability = d3.mean(dataAvailability[feature.properties.citibike_id].h);
+      }
+      availability = Math.round(availability*100) + '%';
+      d3.select("#panel-params-availability-value").text(availability);
+
+      if(mode.slice>=0) {
+        trips = dataTrips[feature.properties.citibike_id].h[mode.slice];
+      } else {
+        trips = d3.mean(dataTrips[feature.properties.citibike_id].h);
+      }
+      trips = Math.round(trips*100)/100;
+      d3.select("#panel-params-trips-value").text(trips);
+
+      if(mode.slice>=0) {
+        balancing = dataBalancing[feature.properties.citibike_id].h[mode.slice];
+      } else {
+        balancing = d3.mean(dataBalancing[feature.properties.citibike_id].h);
+      }
+      balancing = Math.round(balancing*100)/100;
+      d3.select("#panel-params-balancing-value").text(balancing);
 
 
 }

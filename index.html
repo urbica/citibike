@@ -32,7 +32,7 @@
   <div id='about-link'><span class="desktop">About</span></div>
   <div id = 'modes'>
   <div class = 'mode-selected' id='mode-routes'><span class='desktop'>Trips&nbsp;vs.&nbsp;Rebalancing</span><span class='mobile'>Routes</span></div>
-  <div class = 'mode' id='mode-stations'><span class='desktop'>Bikes availability</span><span class='mobile'>Availability</span></div>
+  <div class = 'mode' id='mode-stations'><span class='desktop'>Bike Availability</span><span class='mobile'>Availability</span></div>
   </div>
   <div id='logo'><span class='desktop'>NYC&nbsp;</span><span class='citibike desktop'>Citi&nbsp;Bike&nbsp;</span>
 
@@ -74,12 +74,13 @@
     <div class='line'><div class = 'av' id='av_80'></div><div class='caption'>60&nbsp;— 90%&nbsp;</div></div>
     <div class='line'><div class = 'av' id='av_100'></div><div class='caption'>&gt;90%,&nbsp;full</div></div>
     <div class='line'>Stations types (clusters):</div>
-    <div class='line'><div class = 'av' id='cluster_1'></div><div class='caption'>Cluster 1</div></div>
-    <div class='line'><div class = 'av' id='cluster_2'></div><div class='caption'>Cluster 2</div></div>
-    <div class='line'><div class = 'av' id='cluster_3'></div><div class='caption'>Cluster 3</div></div>
+    <div class='line'><div class = 'av' id='cluster_1'></div><div class='caption'>Low availability</div></div>
+    <div class='line'><div class = 'av' id='cluster_2'></div><div class='caption'>High availability in afternoon</div></div>
+    <div class='line'><div class = 'av' id='cluster_3'></div><div class='caption'>High availability in morning and evening</div></div>
   </div>
 </div>
 <a href="http://urbica.co"><div id='urbica-logo'></div></a>
+<!--
 <div id='stations'>
   <div id='stations-header'>All stations</div>
   <div id='stations-sort'>
@@ -91,11 +92,29 @@
   <div id="stations-list">
   </div>
 </div>
+-->
+
 <div id='panel'>
   <div id='panel-close' class='desktop'></div>
   <div id='panel-header'></div>
   <div id='panel-content' class='desktop'>
-    <div id='panel-content-params'></div>
+    <div id='panel-params'>
+      <div id='panel-params-totals' class='param'></div>
+<!--      <div id='panel-params-subheader' class='param'>Hourly stats ()</div> -->
+      <div id='panel-params-trips' class='param'>
+      <div id='panel-params-trips' class='param'>
+          <div id='panel-params-trips-value' class='param-value'></div>
+          <div id='panel-params-trips-caption' class='param-caption'>Trips per hour,&nbsp;<span class='time'></span></div>
+      </div>
+      <div id='panel-params-balancing' class='param'>
+        <div id='panel-params-balancing-value' class='param-value'></div>
+        <div id='panel-params-balancing-caption' class='param-caption'>Trips per hour,&nbsp;<span class='time'></span></div>
+      </div>
+      <div id='panel-params-availability' class='param'>
+        <div id='panel-params-availability-value' class='param-value'></div>
+        <div id='panel-params-availability-caption' class='param-caption'>Percent of bikes available &nbsp;<span class='time'></span></div>
+      </div>
+    </div>
     <div id='panel-content-graphs'>
       <div id='graph'></div>
     </div>
@@ -114,6 +133,6 @@
 
 <script src='js/citibike.js'></script>
 <script src='js/citibike_av.js'></script>
-<script src='js/citibike_st.js'></script>
+<!-- <script src='js/citibike_st.js'></script> -->
 </body>
 </html>

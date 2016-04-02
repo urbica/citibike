@@ -1,6 +1,7 @@
 var dataAvailability = [], dataTrips = [], dataBalancing = [];
 var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 
+
 var tooltip = d3.select("#tooltip");
 var offsetX = 30,
     offsetY = 15,
@@ -83,7 +84,7 @@ d3.csv('data/mean_rb.csv', function(csv) {
 
   function getAvailabilityGraph(container, f) {
 
-      container.append("div").text("Percent of bikes availability:");
+      container.append("div").text("Percent of bikes available");
 
       var svg = container.append("svg").attr("width", offsetX*2+step*23).attr("height", (height+offsetY*2+10));
 

@@ -236,6 +236,12 @@
    margin-top: 10px;
  }
 
+ #panel-params-totals {
+ }
+
+ .param { line-height: 32px; }
+ .param-value { float: right; display: inline-block; color: #eee; font-size: 20px; }
+ .param-caption { display: inline-block; color: #ccc; }
 
 
   #stations {
