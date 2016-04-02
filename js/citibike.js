@@ -1,4 +1,4 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoidXJiaWNhIiwiYSI6ImNpamFhZXNkOTAwMnp2bGtxOTFvMTNnNjYifQ.jUuvgnxQCuUBUpJ_k7xtkQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoidXJiaWNhIiwiYSI6ImNpbWppN3h3bzAwMWF3aGttdHNuYmtqN2YifQ.EuxNp68ghSVgWPDqokNCPQ';
 
 
 var start = { z: 12.2, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17, minZoom: 11 },
