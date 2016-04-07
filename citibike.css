@@ -240,8 +240,8 @@
  }
 
  .param-subheader {}
- .param { line-height: 32px; }
- .param-value { float: right; display: inline-block; color: #eee; font-size: 20px; }
+ .param { line-height: 28px; }
+ .param-value { float: right; display: inline-block; color: #eee; font-size: 18px; }
  .param-caption { display: inline-block; color: #ccc; font-size: 12px; }
 
 

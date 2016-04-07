@@ -177,7 +177,7 @@ function getSlider() {
       slice_st = 't_av';
     } else {
       slice = 'h' + mode.slice;
-      sliceRate = 0.15;
+      sliceRate = 0.12;
       slice_st = 't' + mode.slice;
     }
 

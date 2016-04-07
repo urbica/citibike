@@ -66,9 +66,7 @@ h3 { color: white; text-align: center; }
 </style>
 <div id = 'content'>
 <div id='tooltip'></div>
-<h3>Stations availability (%)</h3>
 <div id='availability'></div>
-
 </div>
 <script>
 
@@ -76,8 +74,8 @@ var data_av = [], data_in = [], data_out = [], data_rb = [];
 var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 
 var offset = 30,
-    width = 800,
-    height = 400,
+    width = 900,
+    height = 500,
     step = width/23;
 
 var tooltip = d3.select("#tooltip");
@@ -134,7 +132,7 @@ var line = d3.svg.line()
 
       svg.append("svg:path")
       .attr("fill", "none")
-      .style("stroke", colors[data[k].c]) //colors[data[k].c]
+      .style("stroke", '#fff') //colors[data[k].c]) //colors[data[k].c]
       .style("opacity", 0.5)
       .style("stroke-width", 0.5)
       .attr("transform", "translate("+offset+", "+ offset + ")")

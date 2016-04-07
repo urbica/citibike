@@ -123,7 +123,7 @@ d3.csv('data/mean_rb.csv', function(csv) {
 
       if(dataTrips[f]) {
 
-      container.append("div").text("Trips vs. balancing(x10) routes");
+      container.append("div").text("Number of trips vs. rebalanced bicycles (x10) per hour");
       var svg = container.append("svg").attr("width", offsetX*2+step*23).attr("height", height+(offsetY*2+10));
 
       var maxTrips = d3.max(dataTrips[f].h),
