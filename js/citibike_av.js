@@ -1,4 +1,4 @@
-var dataAvailability = [], dataTrips = [], dataBalancing = [];
+var dataAvailability = [], dataTrips = [], dataTripsIn = [], dataBalancing = [];
 var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 
 
@@ -66,6 +66,20 @@ d3.csv('data/outgoing_mean.csv', function(csv) {
   });
 });
 
+d3.csv('data/incoming_mean.csv', function(csv) {
+  csv.forEach(function(r) {
+    //import data
+    var h = [];
+    for(i = 0; i < 24; i++) {
+      h.push((r[i] !== 'NA') ? +r[i] : 0);
+    }
+    dataTripsIn[r.sid] = {
+      h: h,
+      id: +r.sid
+    };
+  });
+});
+
 d3.csv('data/mean_rb.csv', function(csv) {
   csv.forEach(function(r) {
     //import data
@@ -84,7 +98,7 @@ d3.csv('data/mean_rb.csv', function(csv) {
 
   function getAvailabilityGraph(container, f) {
 
-      container.append("div").text("Percent of bikes available");
+      container.append("div").text("Average availability over 24-hours");
 
       var svg = container.append("svg").attr("width", offsetX*2+step*23).attr("height", (height+offsetY*2+10));
 
@@ -126,7 +140,7 @@ d3.csv('data/mean_rb.csv', function(csv) {
       container.append("div").text("Number of trips vs. rebalanced bicycles (x10) per hour");
       var svg = container.append("svg").attr("width", offsetX*2+step*23).attr("height", height+(offsetY*2+10));
 
-      var maxTrips = d3.max(dataTrips[f].h),
+      var maxTrips = (d3.max(dataTrips[f].h) > d3.max(dataTripsIn[f].h)) ? d3.max(dataTrips[f].h) : d3.max(dataTripsIn[f].h),
           maxBalancing = d3.max(dataBalancing[f].h),
           max = (maxTrips >= maxBalancing*10) ? maxTrips : maxBalancing*10;
 
@@ -170,6 +184,19 @@ d3.csv('data/mean_rb.csv', function(csv) {
             .attr("transform", "translate(" + offsetX + "," + offsetY+ ")")
             .attr("d", function() {
               return lineTrips(dataTrips[f].h) });
+
+      if(dataTripsIn[f]) {
+      svg.append("g")
+            .append("svg:path")
+            .attr("fill", "none")
+            .style("stroke", "#f0f")
+            .style("opacity", 0.7)
+            .style("stroke-width", 2)
+            .attr("id", "p" + f)
+            .attr("transform", "translate(" + offsetX + "," + offsetY+ ")")
+            .attr("d", function() {
+            return lineTrips(dataTripsIn[f].h) });
+      }
 
       svg.append("g")
             .append("svg:path")

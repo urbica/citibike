@@ -280,6 +280,11 @@ function getPanel(feature, mode) {
   d3.select("#panel-params-trips-total-value").text(feature.properties.outgoing_trips);
   d3.select("#panel-params-balancing-total-value").text(feature.properties.incoming_balancing);
 
+  d3.select("#panel-params-docks-value").text(feature.properties.totaldocks);
+
+
+  console.log(feature);
+
   panelContentGraph.text('');
 
 
