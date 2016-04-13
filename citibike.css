@@ -163,6 +163,7 @@
 
   .line { line-height: 16px; display: flex; margin-top: 5px; }
   .line-trip { color: #0cf; font-weight: 600; }
+  .line-incoming { color: #c0c; font-weight: 600; }
   .line-rebalancing { color: #f50; font-weight: 600; }
   .caption { display: inline-block; }
   .av { display: inline-block; width: 16px; height: 16px; margin-right: 8px; }

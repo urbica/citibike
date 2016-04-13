@@ -5,7 +5,7 @@ var colors = ['#eeeeee', '#DD00FF', '#FF5500', '#00DDCC'];
 var tooltip = d3.select("#tooltip");
 var offsetX = 30,
     offsetY = 15,
-    height = 100,
+    height = 80,
     step = 10;
 
 
@@ -137,7 +137,7 @@ d3.csv('data/mean_rb.csv', function(csv) {
 
       if(dataTrips[f]) {
 
-      container.append("div").text("Number of trips vs. rebalanced bicycles (x10) per hour");
+      container.append("div").text("Trips vs. rebalanced bicycles (x10) per hour");
       var svg = container.append("svg").attr("width", offsetX*2+step*23).attr("height", height+(offsetY*2+10));
 
       var maxTrips = (d3.max(dataTrips[f].h) > d3.max(dataTripsIn[f].h)) ? d3.max(dataTrips[f].h) : d3.max(dataTripsIn[f].h),

@@ -18,7 +18,7 @@ var start = { z: 12.2, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17
     fade = d3.select("#fade"),
     interval, sliding,
     isCursor,
-    routes_layers = ['r_line_1', 'r_line_2', 'r_line_3', 'l_line_1', 'l_line_2', 'l_line_3'],
+    routes_layers = ['r_line_1', 'r_line_2', 'r_line_3', 'l_line_1', 'l_line_2', 'l_line_3', 'in_line_1', 'in_line_2', 'in_line_3'],
     stations_layers = ['av_bg', 'av_border_1', 'av_border_2', 'av_border_3', 'av_20', 'av_50', 'av_80', 'av_100'];
 
 var currentMode = { id: "routes", slice: -1 };  //init mode
@@ -188,8 +188,12 @@ function getSlider() {
       stationRate = 1;
     }
 
+    d3.select('#line-incoming').style("display", citibike_id ? "block" : "none");
 
     line_filters = {
+        in_line_1: ["all",[">",slice,0],["<",slice,800*sliceRate*stationRate]],
+        in_line_2: ["all",[">=",slice,800*sliceRate*stationRate],["<",slice,1200*sliceRate*stationRate]],
+        in_line_3: ["all",[">=",slice,1500*sliceRate*stationRate]],
         l_line_1: ["all",[">",slice,0],["<",slice,800*sliceRate*stationRate]],
         l_line_2: ["all",[">=",slice,800*sliceRate*stationRate],["<",slice,1200*sliceRate*stationRate]],
         l_line_3: ["all",[">=",slice,1500*sliceRate*stationRate]],
@@ -205,8 +209,14 @@ function getSlider() {
       av_100: ["all",[">=",slice_st,0.9]]
     }
 
+    console.log(line_filters);
 
     if(citibike_id) {
+
+      line_filters['in_line_1'].push(["==", "endid", citibike_id]);
+      line_filters['in_line_2'].push(["==", "endid", citibike_id]);
+      line_filters['in_line_3'].push(["==", "endid", citibike_id]);
+
       line_filters['l_line_1'].push(["==", "startid", citibike_id]);
       line_filters['l_line_2'].push(["==", "startid", citibike_id]);
       line_filters['l_line_3'].push(["==", "startid", citibike_id]);
@@ -220,6 +230,9 @@ function getSlider() {
     } else {
       stations_filters['s_selection'] = ["==", "citibike_id", 0];
       stations_filters['s_selection_label'] = ["==", "citibike_id", 0];
+      line_filters['in_line_1'].push(["==", "endid", 0]);
+      line_filters['in_line_2'].push(["==", "endid", 0]);
+      line_filters['in_line_3'].push(["==", "endid", 0]);
     }
 
 
