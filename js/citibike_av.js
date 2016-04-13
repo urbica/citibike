@@ -14,7 +14,7 @@ var x = d3.time.scale.utc()
     .domain([new Date('2015-01-01T00:00:00.000Z'), new Date('2015-01-02T00:00:00.000Z')]),
 
     yAvailability = d3.scale.linear()
-    .range([100, 0])
+    .range([height, 0])
     .domain([0,100]),
 
     xAxis = d3.svg.axis()
@@ -34,7 +34,7 @@ var x = d3.time.scale.utc()
 var line = d3.svg.line()
       .x(function(d,i) {
         return i*10; })
-      .y(function(d,i) { return (100 - d*100); })
+      .y(function(d,i) { return (height - d*height); })
       .interpolate("basis");
 
 d3.csv('data/open_matrix.csv', function(csv) {
