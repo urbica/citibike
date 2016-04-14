@@ -290,9 +290,9 @@ function getPanel(feature, mode) {
   if(mode.feature) updateParams(mode, feature);
 
   panelHeader.text('#' + feature.properties.citibike_id + ': '+ feature.properties.label)
-  d3.select("#panel-params-trips-total-value").text(feature.properties.outgoing_trips);
+  d3.select("#panel-params-trips-total-value").html(feature.properties.outgoing_trips + '&nbsp;/&nbsp;' + feature.properties.incoming_trips);
+//  d3.select("#panel-params-trips-incoming-value").text(feature.properties.incoming_trips);
   d3.select("#panel-params-balancing-total-value").text(feature.properties.incoming_balancing);
-
   d3.select("#panel-params-docks-value").text(feature.properties.totaldocks);
 
 
@@ -300,9 +300,8 @@ function getPanel(feature, mode) {
 
   panelContentGraph.text('');
 
-
-  getAvailabilityGraph(panelContentGraph, feature.properties.citibike_id);
-  getRoutesGraph(panelContentGraph, feature.properties.citibike_id);
+  getAvailabilityGraph(d3.select("#panel-graph-availability"), feature.properties.citibike_id);
+  getRoutesGraph(d3.select("#panel-graph-trips"), feature.properties.citibike_id);
 }
 
 function updateParams(mode,feature) {

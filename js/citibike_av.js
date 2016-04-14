@@ -98,6 +98,7 @@ d3.csv('data/mean_rb.csv', function(csv) {
 
   function getAvailabilityGraph(container, f) {
 
+      container.text('');
       container.append("div").text("Average availability over 24-hours");
 
       var svg = container.append("svg").attr("width", offsetX*2+step*23).attr("height", (height+offsetY*2+10));
@@ -135,6 +136,8 @@ d3.csv('data/mean_rb.csv', function(csv) {
 
   function getRoutesGraph(container, f) {
 
+      container.text('');
+      
       if(dataTrips[f]) {
 
       container.append("div").text("Trips vs. rebalanced bicycles (x10) per hour");

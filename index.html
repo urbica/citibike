@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title></title>
+    <title>NYC Citibike Rebalancing Study by URBICA</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='js/d3.slider.css' type='text/css' />
@@ -32,7 +32,7 @@
   <div id='about-link'><span class="desktop">About</span></div>
   <div id = 'modes'>
   <div class = 'mode-selected' id='mode-routes'><span class='desktop'>Trips&nbsp;vs.&nbsp;Rebalancing</span><span class='mobile'>Routes</span></div>
-  <div class = 'mode' id='mode-stations'><span class='desktop'>Stations Availability</span><span class='mobile'>Availability</span></div>
+  <div class = 'mode' id='mode-stations'><span class='desktop'>Station Availability</span><span class='mobile'>Availability</span></div>
   </div>
   <div id='logo'><span class='desktop'>NYC&nbsp;</span><span class='citibike desktop'>Citi&nbsp;Bike&nbsp;</span>
 
@@ -51,7 +51,7 @@
       <p>This study focuses on a few of the most intractable problems that any robust bikeshare network faces: rebalancing stations so that they are neither full nor empty, and bike availability. Uneven demand and traffic flows are the root causes, preventing bikeshares from reaching their full potential as forms of public transportation.</p>
       <p>Inspired by Alexander Tedeschi’s Master’s thesis “<a href='https://www.academia.edu/22471385/Rebalancing_Citi_Bike_Mapping_bike_share_redistribution_in_New_York_City'>A geospatial analysis of bike share redistribution in New York City</a>”,  we decided to explore Citi Bike’s system data and json feed for the year 2015 in order to visualize and analyse where and when bicycles were transferred and bike availability patterns.</p>
       <p>We hope that this data exploration tool will serve as an engaging resource for bikeshare users, urbanists, open data enthusiasts, and those who work in public transportation.</p>
-      <p>Read more details at <a href='https://medium.com/p/92ac61a867c7/'>Urbica's blog post</a></p>
+      <p>Read more details at <a href='https://medium.com/@Urbica.co/city-bike-rebalanced-92ac61a867c7'>Urbica's blog post</a></p>
       <div id = 'about-map'><div id = 'about-map-button'>Back to the project</div></div>
       <div id='about-credits'>
       <p>Bike share trip data: <a href="http://www.citibikenyc.com/system-data">System data</a>, <a href="http://www.theopenbus.com/">Openbus json data</a><br/>Routing engine— <a href='http://project-osrm.org/'>OSRM</a>, map data — <a href='http://openstreetmap.org'>OpenSteetMap</a>
@@ -62,20 +62,20 @@
 </div>
 <div id='legend' class='desktop'>
   <div id='legend-routes'>
-    <div class='line'>Routes types:</div>
+    <div class='line'>Route types:</div>
     <div class='line'><span class='line-trip'>—</span>&nbsp;<span>Outgoing trip routes</span></div>
     <div class='line' id='line-incoming'><span class='line-incoming'>—</span>&nbsp;<span>Incoming trip routes</span></div>
     <div class='line'><span class='line-rebalancing'>—</span>&nbsp;<span>Rebalancing (x10)</span></div>
-    <div class='line'>Shown only frequent trips and rebalancing directions.</div>
+    <div class='line'>*&nbsp;Only frequent trips and rebalancing routes are shown</div>
   </div>
   <div id='legend-stations'>
-    <div class='line'>Percent of bikes available on stations:</div>
+    <div class='line'>Percent of bikes available at stations:</div>
     <div class='line'><div class = 'av' id='av_0'></div><div class='caption'>&lt;10%,&nbsp;empty</div></div>
     <div class='line'><div class = 'av' id='av_20'></div><div class='caption'>10&nbsp;—&nbsp;30%</div></div>
     <div class='line'><div class = 'av' id='av_50'></div><div class='caption'>30&nbsp;—&nbsp;60%</div></div>
     <div class='line'><div class = 'av' id='av_80'></div><div class='caption'>60&nbsp;— 90%&nbsp;</div></div>
     <div class='line'><div class = 'av' id='av_100'></div><div class='caption'>&gt;90%,&nbsp;full</div></div>
-    <div class='line'>Stations types (clusters):</div>
+    <div class='line'>Station types (clusters):</div>
     <div class='line'><div class = 'av' id='cluster_1'></div><div class='caption'>Low availability</div></div>
     <div class='line'><div class = 'av' id='cluster_2'></div><div class='caption'>High availability in afternoon</div></div>
     <div class='line'><div class = 'av' id='cluster_3'></div><div class='caption'>High availability in morning and evening</div></div>
@@ -102,13 +102,20 @@
   <div id='panel-content' class='desktop'>
 
     <div id='panel-params'>
+      <div id='panel-graph-availability'></div>
       <div id='panel-params-docks' class='param'>
           <div id='panel-params-docks-value' class='param-value'></div>
           <div id='panel-params-docks-caption' class='param-caption'>Number of docks:</div>
       </div>
+      <div id='panel-params-availability' class='param'>
+        <div id='panel-params-availability-value' class='param-value'></div>
+        <div id='panel-params-availability-caption' class='param-caption'>Percent of bikes available &nbsp;(<span class='time'  id='time-availability'></span>)</div>
+      </div>
+
+          <div id='panel-graph-trips'></div>
       <div id='panel-params-trips-total' class='param'>
           <div id='panel-params-trips-total-value' class='param-value'></div>
-          <div id='panel-params-trips-total-caption' class='param-caption'>Outgoing trips total:</div>
+          <div id='panel-params-trips-total-caption' class='param-caption'>Trips total (outgoing/incoming):</div>
       </div>
       <div id='panel-params-balancing-total' class='param'>
           <div id='panel-params-balancing-total-value' class='param-value'></div>
@@ -122,15 +129,7 @@
         <div id='panel-params-balancing-value' class='param-value'></div>
         <div id='panel-params-balancing-caption' class='param-caption'>Rebalancing per hour&nbsp;(<span class='time'  id='time-balancing'></span>)</div>
       </div>
-      <div id='panel-params-availability' class='param'>
-        <div id='panel-params-availability-value' class='param-value'></div>
-        <div id='panel-params-availability-caption' class='param-caption'>Percent of bikes available &nbsp;(<span class='time'  id='time-availability'></span>)</div>
-      </div>
     </div>
-    <div id='panel-content-graphs'>
-      <div id='graph'></div>
-    </div>
-    <div id='panel-content-exception'></div>
   </div>
 </div>
 </div>
@@ -146,6 +145,47 @@
 
 <script src='js/citibike.js'></script>
 <script src='js/citibike_av.js'></script>
-<!-- <script src='js/citibike_st.js'></script> -->
+
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter31411338 = new Ya.Metrika({
+                id:31411338,
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true
+            });
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/31411338" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64821013-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
 </body>
 </html>
