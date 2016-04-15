@@ -85,54 +85,28 @@ master = new mapboxgl.Map({
 })
 .on('click', function(e) {
   console.log(e.point);
-  var features = map.queryRenderedFeatures(e.point, { layers: ['s_stations'] });
+  var coords = [[(e.point.x-6),(e.point.y-6)],[(e.point.x+6),(e.point.y+6)]]
+  var features = master.queryRenderedFeatures(coords, { layers: ['s_stations'] });
   console.log(features);
-  /*
-       master.queryRenderedFeatures(e.point, {radius: 10}, function (err, features) {
-           if (err) throw err;
-           //filling features array
-           var citibike_id, feature;
-           features.forEach(function(f,i) {
-             if(f.layer.id.substr(0,2) === 's_') {
-               citibike_id = f.properties.citibike_id;
-               feature = f;
-             }
-           });
-           if(citibike_id) {
-             changeMode({id: currentMode.id, slice: currentMode.slice, feature: feature });
-           } else {
-             changeMode({id: currentMode.id, slice: currentMode.slice});
-           }
-       });
-       */
+  if(features.length) {
+    changeMode({id: currentMode.id, slice: currentMode.slice, feature: features[0] });
+  } else {
+    changeMode({id: currentMode.id, slice: currentMode.slice});
+  }
 
 })
 .on('mousemove', function(e){
-//
-/*
-  master.featuresAt(e.point, {radius: 10}, function (err, features) {
-    if (err) throw err;
-    isCursor = false;
-    //filling features array
-    features.forEach(function(f,i) {
-      if(f.layer.id.substr(0,2) === 's_') {
-          isCursor = true;
-      }
+  var coords = [[(e.point.x-6),(e.point.y-6)],[(e.point.x+6),(e.point.y+6)]]
+  var features = master.queryRenderedFeatures(coords, { layers: ['s_stations'] });
+  if(features.length) {
+    d3.select(".mapboxgl-canvas").style({
+      cursor: "pointer"
     });
-
-    if(isCursor) {
-      d3.select(".mapboxgl-canvas").style({
-        cursor: "pointer"
-      });
-    } else {
-      d3.select(".mapboxgl-canvas").style({
-        cursor: "-webkit-grab"
-      });
-    }
-  });
-  */
-
-
+  } else {
+    d3.select(".mapboxgl-canvas").style({
+      cursor: "-webkit-grab"
+    });
+  }
 });
 
 function getSlider() {
