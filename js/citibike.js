@@ -1,7 +1,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidXJiaWNhIiwiYSI6ImNpbWppN3h3bzAwMWF3aGttdHNuYmtqN2YifQ.EuxNp68ghSVgWPDqokNCPQ';
 
 
-var start = { z: 12.2, center: [-73.991226,40.740523], bearing: -61, maxZoom: 17, minZoom: 11 },
+var start = { z: 12.2, center: [-73.991226,40.740523], bearing: 0, maxZoom: 17, minZoom: 11 },
     master, left, right,
     masterStyle, leftStyle, rightStyle,
     masterArea = d3.select("#master-area"),
