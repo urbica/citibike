@@ -85,7 +85,10 @@ master = new mapboxgl.Map({
 })
 .on('click', function(e) {
   console.log(e.point);
-       master.featuresAt(e.point, {radius: 10}, function (err, features) {
+  var features = map.queryRenderedFeatures(e.point, { layers: ['s_stations'] });
+  console.log(features);
+  /*
+       master.queryRenderedFeatures(e.point, {radius: 10}, function (err, features) {
            if (err) throw err;
            //filling features array
            var citibike_id, feature;
@@ -101,9 +104,12 @@ master = new mapboxgl.Map({
              changeMode({id: currentMode.id, slice: currentMode.slice});
            }
        });
+       */
+
 })
 .on('mousemove', function(e){
 //
+/*
   master.featuresAt(e.point, {radius: 10}, function (err, features) {
     if (err) throw err;
     isCursor = false;
@@ -124,6 +130,7 @@ master = new mapboxgl.Map({
       });
     }
   });
+  */
 
 
 });
@@ -238,30 +245,31 @@ function getSlider() {
 
     if(master) {
 
-      master.batch(function (batch) {
+
         if(mode.id !== currentMode.id) {
             routes_layers.forEach(function (l) {
               if(mode.id == 'routes')
-                batch.setLayoutProperty(l, "visibility", "visible");
+                master.setLayoutProperty(l, "visibility", "visible");
                   else
-                  batch.setLayoutProperty(l, "visibility", "none");
+                  master.setLayoutProperty(l, "visibility", "none");
             });
             stations_layers.forEach(function (l) {
               if(mode.id == 'stations')
-                batch.setLayoutProperty(l, "visibility", "visible");
+                master.setLayoutProperty(l, "visibility", "visible");
                   else
-                  batch.setLayoutProperty(l, "visibility", "none");
+                  master.setLayoutProperty(l, "visibility", "none");
             });
         }
 
+
         for(lf in line_filters) {
-            batch.setFilter(lf, line_filters[lf]);
+            master.setFilter(lf, line_filters[lf]);
         }
         for(st in stations_filters) {
-          batch.setFilter(st, stations_filters[st]);
+          master.setFilter(st, stations_filters[st]);
           // console.log(st + ': ' + JSON.stringify(stations_filters[st]));
         }
-    });
+
     }
 
 
