@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title></title>
+  <script src='js/d3.min.js'></script>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
+  <style>
+  body { margin:0; padding:0; font-family: 'Open Sans', sans-serif; font-weight: 300; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+
+<style>
+body {
+  background: #000;
+}
+
+h3 { color: white; text-align: center; }
+
+#content {
+  max-width: 480px;
+}
+
+  #content {
+    text-align: center;
+  }
+  #graph {
+    background: black;
+    display: inline-block;
+    margin: 20px;
+
+  }
+  #tooltip {
+  	font-size: 24px;
+  	color: #fff;
+  	background: rgba(30,30,30,0.9);
+  	color: #f0f0f0;
+  	padding: 5px;
+  	max-width: 250px;
+  	font-size: 12px;
+  	position: absolute;
+  	z-index: 111100666;
+  }
+
+.x.axis text,
+.y.axis text {
+  fill: #aaa;
+  font-size: 10px;
+}
+
+.x.axis line,
+.y.axis line {
+  stroke: none;
+}
+
+.x.axis path,
+.y.axis path {
+  fill: none;
+  stroke: #666;
+}
+
+
+
+</style>
+<div id = 'content'>
+<div id='tooltip'></div>
+<div id='availability'></div>
+</div>
+<script>
+
+var data_av = [], data_in = [], data_out = [], data_rb = [];
+var colors = ['#eeeeee', '#FF00FF', '#FF5500', '#00DDCC'];
+
+var offset = 30,
+    width = 900,
+    height = 500,
+    step = width/23;
+
+var tooltip = d3.select("#tooltip");
+
+var x = d3.time.scale.utc()
+.range([0, width])
+.domain([new Date('2015-01-01T00:00:00.000Z'), new Date('2015-01-02T00:00:00.000Z')]);
+
+var y = d3.scale.linear()
+.range([height, 0])
+.domain([0,100]);
+
+var xAxis = d3.svg.axis()
+.scale(x)
+.ticks(d3.time.hour, 4);
+
+var yAxis = d3.svg.axis()
+.scale(y)
+.ticks(4)
+.orient("left");
+
+var line = d3.svg.line()
+.x(function(d,i) {
+  return i*step;
+})
+  .y(function(d,i) { return (height - d*height); })
+  .interpolate("basis");
+
+  d3.csv('data/open_matrix.csv', function(csv) {
+    csv.forEach(function(r) {
+      //import data
+      var h = [];
+      for(i = 0; i < 24; i++) {
+        h.push(Math.round(+r[i]*1000)/1000);
+      }
+      data_av[r.sid] = {
+        c: +r.cluster,
+        h: h,
+        id: +r.sid
+      };
+    });
+    getGraph("availability",data_av);
+  });
+
+
+
+  function getGraph(conatiner_name, data) {
+
+    var svg = d3.select("#"+conatiner_name).append("svg")
+    .attr("width", (offset*2+width))
+    .attr("height", (offset*2+height));
+
+    for(k in data) {
+
+      if(data[k].c == 3) {
+      svg.append("svg:path")
+      .attr("fill", "none")
+      .style("stroke", colors[data[k].c]) //colors[data[k].c]
+      .style("opacity", 0.7)
+      .style("stroke-width", 0.5)
+      .attr("transform", "translate("+offset+", "+ offset + ")")
+      .attr("id", "p" + k)
+      .attr("d", function() {
+        return line(data[k].h) })
+        .on("mouseover", function(d) {
+          var p = d3.select("#"+d3.event.target.id);
+          p.style("stroke-width", 2).style("opacity", 1).style("z-index", "1111111");
+          tooltip.style("opacity", 1);
+          tooltip.html("#" + d3.event.target.id.substr(1))
+          .style("opacity", .9)
+          .style("left", (d3.event.pageX) + "px")
+          .style("top", (d3.event.pageY - 28) + "px");
+        })
+        .on("mouseout", function(d) {
+          tooltip.style("opacity", 0);
+          var p = d3.select("#"+d3.event.target.id);
+          p.style("stroke-width", 0.2).style("opacity", 0.7).style("z-index", "none");
+        });
+      }
+    }
+
+
+      svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(" + offset + "," + (height+offset) + ")")
+      .call(xAxis);
+
+      svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + offset + ", " + offset + ")")
+      .call(yAxis);
+
+    }
+
+    </script>
+
+  </body>
+  </html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title></title>
+  <script src='js/d3.min.js'></script>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
+  <style>
+  body { margin:0; padding:0; font-family: 'Open Sans', sans-serif; font-weight: 300; }
+  #container { padding: 20px; border: 1px solid white; display: inline-block; }
+  </style>
+</head>
+<body>
+
+<style>
+body {
+  background: #000;
+}
+
+h3 { color: white; text-align: center; }
+
+#content {
+  max-width: 480px;
+}
+
+
+.x.axis text,
+.y.axis text {
+  fill: #aaa;
+  font-size: 10px;
+}
+
+.x.axis line,
+.y.axis line {
+  stroke: none;
+}
+
+.x.axis path,
+.y.axis path {
+  fill: none;
+  stroke: #666;
+}
+
+
+.x.axis text,
+.y.axis text {
+  fill: #aaa;
+  font-size: 10px;
+}
+
+.x.axis line,
+.y.axis line {
+  stroke: #aaa;
+}
+
+.x.axis path,
+.y.axis path {
+  fill: none;
+  stroke: #666;
+}
+
+
+.y.axis-trips text {
+  fill: #aaa;
+  font-size: 10px;
+}
+
+.y.axis-trips line {
+  stroke: #0cf;
+  opacity: 0.5;
+}
+
+.y.axis-trips path {
+  fill: none;
+  stroke: #0cf;
+  opacity: 0.5;
+}
+
+.y.axis-balancing text {
+  font-size: 10px;
+  fill: #aaa;
+}
+
+.y.axis-balancing line {
+  stroke: #f60;
+  opacity: 0.5;
+}
+
+.y.axis-balancing path {
+  fill: none;
+  stroke: #f60;
+  opacity: 0.5;
+}
+
+
+</style>
+<div id='container'></div>
+<script>
+
+var data = [];
+var colors = ['#eeeeee', '#FF00FF', '#FF5500', '#00DDCC'];
+
+var containter = d3.select("#container");
+var offset = 50,
+    width = 900,
+    height = 500,
+    step = width/23;
+
+var tooltip = d3.select("#tooltip");
+
+var maxTrips = 0;
+var maxBalancing = 0;
+
+
+var x = d3.time.scale.utc()
+.range([0, width])
+.domain([new Date('2015-01-01T00:00:00.000Z'), new Date('2015-01-02T00:00:00.000Z')]);
+
+
+d3.csv('data/hours.csv', function(csv) {
+  csv.forEach(function(d) {
+    data.push({t: +d.trips, b: +d.balancing });
+    if(+d.trips >= maxTrips) maxTrips = +d.trips;
+    if(+d.balancing >= maxBalancing) maxBalancing = +d.balancing;
+  });
+  getGraph();
+});
+
+
+  function getGraph() {
+
+      var svg = containter.append("svg").attr("width", offset*2+step*23).attr("height", height+(offset*2+10));
+
+      var max = (maxTrips >= maxBalancing*10) ? maxTrips : maxBalancing*10;
+
+      var yTrips = d3.scale.linear()
+      .range([height, 0])
+      .domain([0,max]),
+
+      xAxis = d3.svg.axis()
+      .scale(x)
+      .ticks(d3.time.hour, 6),
+
+      yBalancing = d3.scale.linear()
+      .range([height, 0])
+      .domain([0,max/10]),
+
+      yAxisTrips = d3.svg.axis()
+      .scale(yTrips)
+      .ticks(4)
+      .orient("left"),
+
+      yAxisBalancing = d3.svg.axis()
+      .scale(yBalancing)
+      .ticks(4)
+      .orient("right"),
+
+      lineTrips = d3.svg.line()
+        .x(function(d,i) {
+          return i*step; })
+        .y(function(d,i) { return (height - height*(d.t/max)); })
+        .interpolate("basis"),
+
+      lineBalancing = d3.svg.line()
+        .x(function(d,i) {
+          return i*step; })
+        .y(function(d,i) { return (height - height*((d.b*10)/max)); })
+        .interpolate("basis");
+
+      svg.append("g")
+            .append("svg:path")
+            .attr("fill", "none")
+            .style("stroke", "#0cf")
+            .style("opacity", 0.9)
+            .style("stroke-width", 5)
+            .attr("transform", "translate(" + offset + "," + offset+ ")")
+            .attr("d", function() {
+              return lineTrips(data) });
+
+      svg.append("g")
+            .append("svg:path")
+            .attr("fill", "none")
+            .style("stroke", "#f50")
+            .style("opacity", 0.9)
+            .style("stroke-width", 5)
+            .attr("transform", "translate(" + offset + "," + offset + ")")
+            .attr("d", function() {
+            return lineBalancing(data) });
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(" + offset + ", "+ (offset+height) +")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y axis-trips")
+            .attr("transform", "translate("+ offset + "," + offset + ")")
+            .call(yAxisTrips);
+
+        svg.append("g")
+            .attr("class", "y axis-balancing")
+            .attr("transform", "translate("+ (offset+step*23) + "," + offset + ")")
+            .call(yAxisBalancing);
+
+  }
+
+
+    </script>
+
+  </body>
+  </html>
