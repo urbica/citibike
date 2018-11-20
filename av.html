@@ -141,7 +141,6 @@ var line = d3.svg.line()
           id: +r.sid
         };
       });
-      console.log(data_in);
       getGraph("incoming_mean",data_in, "red");
     });
 
@@ -201,7 +200,6 @@ var line = d3.svg.line()
         return line(data[k].h) })
         .on("mouseover", function(d) {
           var p = d3.select("#"+d3.event.target.id);
-          console.log(data[d3.event.target.id.substr(1)]);
           p.style("stroke-width", 2).style("opacity", 1).style("z-index", "1111111");
           tooltip.style("opacity", 1);
           tooltip.html("#" + d3.event.target.id.substr(1))

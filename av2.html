@@ -178,12 +178,10 @@ var line = d3.svg.line()
 
                       //sort array data_ordered
 
-                      console.log(data_ordered);
                       data_ordered.sort(function (a,b) {
                         return a.t > b.t;
                       });
 
-                      console.log(data_ordered);
 
                       getGraph();
 
@@ -213,7 +211,6 @@ var line = d3.svg.line()
       .attr("width", (offset*2+width))
       .attr("height", (offset*2+height));
 
-      console.log(data_av[k.id].id);
       getPath_av(svg, data_av[k.id], "white");
       getPath(svg, data_out[k.id], "red");
       getPath(svg, data_in[k.id], "blue");

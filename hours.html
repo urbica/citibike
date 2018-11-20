@@ -118,7 +118,6 @@ var x = d3.time.scale.utc()
 
 
 d3.csv('data/hours.csv', function(csv) {
-  console.log(csv);
   csv.forEach(function(d) {
     data.push({t: +d.trips, b: +d.balancing });
     if(+d.trips >= maxTrips) maxTrips = +d.trips;
